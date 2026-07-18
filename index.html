@@ -78,11 +78,11 @@ nav {
   pointer-events: none;
 }
 .hero-logo {
-  display: flex; align-items: baseline; justify-content: center; gap: 0; margin-bottom: 20px;
+  display: flex; align-items: baseline; justify-content: center; gap: 0; margin-bottom: 28px;
 }
-.hero-logo-my { font-size: clamp(28px, 3.4vw, 38px); font-weight: 300; color: #F8F7F4; letter-spacing: -0.6px; line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.35); }
-.hero-logo-fin { font-size: clamp(28px, 3.4vw, 38px); font-weight: 600; color: var(--sage); letter-spacing: -0.6px; line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.55); }
-.hero-logo-dot { font-size: clamp(30px, 3.6vw, 40px); font-weight: 700; color: var(--sage); line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.55); }
+.hero-logo-my { font-size: clamp(46px, 6.8vw, 94px); font-weight: 300; color: #F8F7F4; letter-spacing: -3px; line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.35); }
+.hero-logo-fin { font-size: clamp(46px, 6.8vw, 94px); font-weight: 600; color: var(--sage); letter-spacing: -3px; line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.55); }
+.hero-logo-dot { font-size: clamp(48px, 7vw, 98px); font-weight: 700; color: var(--sage); line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.55); }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(200,217,200,0.12); border: 1px solid rgba(200,217,200,0.2);
@@ -154,8 +154,8 @@ nav {
 .hero-logo, .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
   opacity: 0; animation: hero-reveal .9s cubic-bezier(.16,1,.3,1) forwards;
 }
-.hero-logo { animation-delay: 0s; }
-.hero-eyebrow { animation-delay: .1s; }
+.hero-eyebrow { animation-delay: 0s; }
+.hero-logo { animation-delay: .1s; }
 .hero-title { animation-delay: .2s; }
 .hero-sub { animation-delay: .32s; }
 .hero-card { animation-delay: .44s; }
@@ -472,10 +472,10 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 
 <!-- HERO -->
 <section class="hero" id="hero">
+  <div class="hero-eyebrow">Conçu pour les frontaliers franco-suisses</div>
   <div class="hero-logo">
     <span class="hero-logo-my">my</span><span class="hero-logo-fin">finance</span><span class="hero-logo-dot">.</span>
   </div>
-  <div class="hero-eyebrow">Conçu pour les frontaliers franco-suisses</div>
   <h1 class="hero-title">
     votre patrimoine,<br><strong>clairement<span class="hero-accent">.</span></strong>
   </h1>
