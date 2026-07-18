@@ -54,8 +54,13 @@ nav {
 .nav-my { font-size: 18px; font-weight: 300; color: #F8F7F4; letter-spacing: -0.4px; }
 .nav-fin { font-size: 18px; font-weight: 600; color: var(--sage); letter-spacing: -0.4px; }
 .nav-dot { font-size: 20px; font-weight: 700; color: var(--sage); }
-.nav-links { display: flex; align-items: center; gap: 28px; }
-.nav-links a { font-size: 13px; color: rgba(248,247,244,0.6); text-decoration: none; transition: color .2s; }
+.nav-links {
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 100;
+  width: calc(100% - 40px); max-width: var(--max); height: 60px;
+  display: flex; align-items: center; justify-content: flex-end; gap: 28px;
+  padding-right: 28px; pointer-events: none;
+}
+.nav-links a { font-size: 13px; color: rgba(248,247,244,0.6); text-decoration: none; transition: color .2s; pointer-events: auto; }
 .nav-links a:hover { color: #F8F7F4; }
 .nav-cta { background: var(--sage-dk); color: #fff !important; padding: 7px 18px; border-radius: var(--radius-sm); font-weight: 500 !important; font-size: 13px; text-decoration: none; transition: opacity .2s; }
 .nav-cta:hover { opacity: .85; }
@@ -322,14 +327,15 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
   .nav-links {
     display: none;
     position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
-    width: calc(100% - 20px); max-width: 420px;
-    flex-direction: column; align-items: stretch; gap: 0;
+    width: calc(100% - 20px); max-width: 420px; height: auto;
+    flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0;
     background: rgba(44,44,42,0.6);
     backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255,255,255,0.09);
     border-radius: 24px;
     padding: 8px 16px 16px; max-height: calc(100vh - 90px); overflow-y: auto;
     box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    pointer-events: auto;
   }
   .nav-links.open { display: flex; }
   .nav-links a { font-size: 16px; padding: 14px 4px; min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.07); }
@@ -394,15 +400,15 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
   <button class="nav-burger" id="navBurger" onclick="toggleMobileNav()" aria-label="Ouvrir le menu" aria-expanded="false">
     <i class="ti ti-menu-2" id="navBurgerIcon"></i>
   </button>
-  <div class="nav-links" id="navLinks">
-    <a href="#solution">Solution</a>
-    <a href="#dashboard">Dashboard</a>
-    <a href="#cibles">Pour qui</a>
-    <a href="#simulateur">Simulateur</a>
-    <a href="#tarifs">Tarifs</a>
-    <a href="#beta" class="nav-cta">Accès bêta</a>
-  </div>
 </nav>
+<div class="nav-links" id="navLinks">
+  <a href="#solution">Solution</a>
+  <a href="#dashboard">Dashboard</a>
+  <a href="#cibles">Pour qui</a>
+  <a href="#simulateur">Simulateur</a>
+  <a href="#tarifs">Tarifs</a>
+  <a href="#beta" class="nav-cta">Accès bêta</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="hero">
