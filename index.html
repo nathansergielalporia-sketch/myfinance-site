@@ -115,20 +115,10 @@ nav {
 .hero-bar-labels { display: flex; justify-content: space-between; font-size: 10px; color: rgba(248,247,244,0.3); margin-bottom: 6px; }
 .hero-bar-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
 .hero-bar-fill { position: relative; overflow: hidden; height: 100%; background: linear-gradient(90deg, var(--sage) 0%, var(--sage-dk) 100%); border-radius: 10px; width: 0%; transition: width 1.8s cubic-bezier(.4,0,.2,1); }
-.hero-bar-fill::after {
-  content: ''; position: absolute; inset: 0; width: 55%;
+.hero-bar-shine {
+  position: absolute; top: 0; left: 0; height: 100%; width: 55%;
   background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 50%, transparent 100%);
-  will-change: transform;
-}
-.hero-bar-fill.shimmer-active::after {
-  animation: hero-bar-shimmer 2.4s linear infinite;
-}
-@keyframes hero-bar-shimmer {
-  from { transform: translateX(-200%); }
-  to { transform: translateX(240%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-bar-fill.shimmer-active::after { animation: none; }
+  transform: translateX(-200%);
 }
 .hero-proof { display: flex; align-items: center; gap: 20px; justify-content: center; flex-wrap: wrap; }
 .hero-proof-item { font-size: 12px; color: rgba(248,247,244,0.35); display: flex; align-items: center; gap: 6px; }
@@ -385,7 +375,7 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 
   <div class="hero-bar-wrap" style="margin-bottom:48px">
     <div class="hero-bar-labels"><span>Immobilier</span><span>Épargne</span><span>Placements</span></div>
-    <div class="hero-bar-track"><div class="hero-bar-fill" id="heroBar"></div></div>
+    <div class="hero-bar-track"><div class="hero-bar-fill" id="heroBar"><span class="hero-bar-shine" id="heroBarShine"></span></div></div>
   </div>
 
   <div class="hero-ctas">
@@ -938,12 +928,17 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     const heroBar = document.getElementById('heroBar');
     heroBar.style.width = '73%';
-    // Force a reflow before toggling the class (instead of having the animation
-    // active at CSS parse time). Without this, iOS Safari can fail to start
-    // compositing the shimmer until an unrelated reflow (e.g. a device rotation)
-    // wakes it up.
-    void heroBar.offsetWidth;
-    heroBar.classList.add('shimmer-active');
+    // Driven via the Web Animations API rather than a CSS keyframe animation:
+    // on iOS WebKit, a CSS animation started through a class toggle can fail to
+    // ever start compositing until an unrelated reflow (e.g. a device rotation)
+    // wakes it up. element.animate() is imperative and starts reliably instead.
+    const shine = document.getElementById('heroBarShine');
+    if (shine && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      shine.animate(
+        [{ transform: 'translateX(-200%)' }, { transform: 'translateX(240%)' }],
+        { duration: 2400, iterations: Infinity, easing: 'linear' }
+      );
+    }
     animateCounter(347820, 2000);
   }, 400);
 });
