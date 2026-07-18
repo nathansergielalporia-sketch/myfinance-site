@@ -39,11 +39,16 @@ body { font-family: 'Inter', sans-serif; background: var(--ecru); color: var(--t
 
 /* ── NAV ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(44,44,42,0.96); backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  padding: 0 32px; height: 60px;
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 100;
+  width: calc(100% - 40px); max-width: var(--max);
+  background: rgba(44,44,42,0.6);
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 999px;
+  padding: 0 28px; height: 60px;
   display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+  transition: background .3s ease, box-shadow .3s ease;
 }
 .nav-logo { display: flex; align-items: baseline; gap: 0; text-decoration: none; }
 .nav-my { font-size: 18px; font-weight: 300; color: #F8F7F4; letter-spacing: -0.4px; }
@@ -60,7 +65,7 @@ nav {
 .hero {
   background: var(--charcoal); min-height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 100px 32px 60px; text-align: center; position: relative; overflow: hidden;
+  padding: 112px 32px 60px; text-align: center; position: relative; overflow: hidden;
 }
 .hero::before {
   content: ''; position: absolute; inset: 0;
@@ -285,27 +290,31 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  nav { padding: 0 16px; }
+  nav { top: 10px; width: calc(100% - 20px); padding: 0 8px 0 20px; height: 52px; }
 
   /* Hamburger menu */
-  .nav-burger { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+  .nav-burger { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; }
   .nav-links {
     display: none;
-    position: fixed; top: 60px; left: 0; right: 0;
+    position: fixed; top: 70px; left: 50%; transform: translateX(-50%);
+    width: calc(100% - 20px); max-width: 420px;
     flex-direction: column; align-items: stretch; gap: 0;
-    background: rgba(44,44,42,0.98); backdrop-filter: blur(12px);
-    padding: 4px 16px 20px; max-height: calc(100vh - 60px); overflow-y: auto;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(44,44,42,0.85);
+    backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 8px 16px 16px; max-height: calc(100vh - 90px); overflow-y: auto;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
   }
   .nav-links.open { display: flex; }
-  .nav-links a { font-size: 16px; padding: 14px 4px; min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .nav-links a { font-size: 16px; padding: 14px 4px; min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.07); }
   .nav-links a:last-child { border-bottom: none; }
   .nav-links .nav-cta { margin-top: 12px; justify-content: center; padding: 14px; }
 
   section { padding: 60px 16px; }
 
   /* Hero */
-  .hero { padding: 88px 20px 48px; }
+  .hero { padding: 96px 20px 48px; }
   .hero-title { font-size: clamp(32px, 9vw, 46px); letter-spacing: -1.5px; }
   .hero-sub { font-size: 16px; margin-bottom: 36px; }
   .hero-card { padding: 20px 22px; max-width: 100%; }
@@ -1232,9 +1241,11 @@ document.querySelectorAll('.nav-links a').forEach(a => {
 window.addEventListener('scroll', () => {
   const nav = document.querySelector('nav');
   if (window.scrollY > 20) {
-    nav.style.borderBottomColor = 'rgba(255,255,255,0.1)';
+    nav.style.background = 'rgba(44,44,42,0.78)';
+    nav.style.boxShadow = '0 10px 34px rgba(0,0,0,0.4)';
   } else {
-    nav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
+    nav.style.background = 'rgba(44,44,42,0.6)';
+    nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.28)';
   }
 });
 </script>
