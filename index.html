@@ -51,9 +51,9 @@ nav {
   transition: background .3s ease, box-shadow .3s ease;
 }
 .nav-logo { display: flex; align-items: baseline; gap: 0; text-decoration: none; }
-.nav-my { font-size: 18px; font-weight: 300; color: #F8F7F4; letter-spacing: -0.4px; }
-.nav-fin { font-size: 18px; font-weight: 600; color: var(--sage); letter-spacing: -0.4px; }
-.nav-dot { font-size: 20px; font-weight: 700; color: var(--sage); }
+.nav-my { font-size: 18px; font-weight: 300; color: #F8F7F4; letter-spacing: -0.4px; text-shadow: 0 0 20px rgba(200,217,200,0.4); }
+.nav-fin { font-size: 18px; font-weight: 600; color: var(--sage); letter-spacing: -0.4px; text-shadow: 0 0 20px rgba(200,217,200,0.6); }
+.nav-dot { font-size: 20px; font-weight: 700; color: var(--sage); text-shadow: 0 0 20px rgba(200,217,200,0.6); }
 .nav-links {
   position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 100;
   width: calc(100% - 40px); max-width: var(--max); height: 60px;
@@ -77,12 +77,6 @@ nav {
   background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,217,200,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
-.hero-logo {
-  display: flex; align-items: baseline; justify-content: center; gap: 0; margin-bottom: 20px;
-}
-.hero-logo-my { font-size: clamp(28px, 3.4vw, 38px); font-weight: 300; color: #F8F7F4; letter-spacing: -0.6px; line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.35); }
-.hero-logo-fin { font-size: clamp(28px, 3.4vw, 38px); font-weight: 600; color: var(--sage); letter-spacing: -0.6px; line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.55); }
-.hero-logo-dot { font-size: clamp(30px, 3.6vw, 40px); font-weight: 700; color: var(--sage); line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.55); }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(200,217,200,0.12); border: 1px solid rgba(200,217,200,0.2);
@@ -151,11 +145,10 @@ nav {
   from { background-position: -150% 0, 0 0; }
   to { background-position: 250% 0, 0 0; }
 }
-.hero-logo, .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
+.hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
   opacity: 0; animation: hero-reveal .9s cubic-bezier(.16,1,.3,1) forwards;
 }
-.hero-logo { animation-delay: 0s; }
-.hero-eyebrow { animation-delay: .1s; }
+.hero-eyebrow { animation-delay: .05s; }
 .hero-title { animation-delay: .2s; }
 .hero-sub { animation-delay: .32s; }
 .hero-card { animation-delay: .44s; }
@@ -169,7 +162,7 @@ nav {
 @media (prefers-reduced-motion: reduce) {
   .hero-bar-fill { animation: none; }
   .hero-eyebrow::before { animation: none; }
-  .hero-logo, .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
+  .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
     animation: none; opacity: 1;
   }
   .multiplier-box, .inaction-box, .value-flash { animation: none; }
@@ -472,9 +465,6 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-logo">
-    <span class="hero-logo-my">my</span><span class="hero-logo-fin">finance</span><span class="hero-logo-dot">.</span>
-  </div>
   <div class="hero-eyebrow">Conçu pour les frontaliers franco-suisses</div>
   <h1 class="hero-title">
     votre patrimoine,<br><strong>clairement<span class="hero-accent">.</span></strong>
