@@ -116,13 +116,13 @@ nav {
 .hero-bar-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
 .hero-bar-fill { position: relative; overflow: hidden; height: 100%; background: linear-gradient(90deg, var(--sage) 0%, var(--sage-dk) 100%); border-radius: 10px; width: 0%; transition: width 1.8s cubic-bezier(.4,0,.2,1); }
 .hero-bar-fill::after {
-  content: ''; position: absolute; inset: 0; width: 60%;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+  content: ''; position: absolute; inset: 0; width: 55%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 50%, transparent 100%);
   animation: hero-bar-shimmer 2.4s linear infinite;
 }
 @keyframes hero-bar-shimmer {
-  from { transform: translateX(220%); }
-  to { transform: translateX(-160%); }
+  from { transform: translateX(-200%); }
+  to { transform: translateX(240%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-bar-fill::after { animation: none; }
