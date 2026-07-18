@@ -1182,8 +1182,11 @@ window.addEventListener('load', () => {
   }, 600);
 });
 
-// Resize chart
+// Resize chart (ignore height-only changes, e.g. mobile browser address bar show/hide on scroll)
+let lastViewportWidth = window.innerWidth;
 window.addEventListener('resize', () => {
+  if (window.innerWidth === lastViewportWidth) return;
+  lastViewportWidth = window.innerWidth;
   if (document.getElementById('chartCanvas')) calcSim();
 });
 
