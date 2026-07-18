@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>myfinance. — votre patrimoine, clairement.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+/* ── RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --charcoal: #2C2C2A;
+  --ecru: #F8F7F4;
+  --surface: #FFFFFF;
+  --sage: #C8D9C8;
+  --sage-dk: #4A6B4A;
+  --sage-lt: #EBF2EB;
+  --blue: #B8CDD9;
+  --blue-dk: #2C5A72;
+  --blue-lt: #E8F0F5;
+  --sand: #E8DFD0;
+  --sand-dk: #7A6348;
+  --coral: #E8C4B8;
+  --coral-dk: #7A3F30;
+  --lavender: #D4C8E0;
+  --lavender-dk: #5A3F7A;
+  --text: #2C2C2A;
+  --text2: #888780;
+  --text3: #B4B2A9;
+  --border: #E8E6E0;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --max: 1100px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--ecru); color: var(--text); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(44,44,42,0.96); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 32px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: baseline; gap: 0; text-decoration: none; }
+.nav-my { font-size: 18px; font-weight: 300; color: #F8F7F4; letter-spacing: -0.4px; }
+.nav-fin { font-size: 18px; font-weight: 600; color: var(--sage); letter-spacing: -0.4px; }
+.nav-dot { font-size: 20px; font-weight: 700; color: var(--sage); }
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a { font-size: 13px; color: rgba(248,247,244,0.6); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: #F8F7F4; }
+.nav-cta { background: var(--sage-dk); color: #fff !important; padding: 7px 18px; border-radius: var(--radius-sm); font-weight: 500 !important; font-size: 13px; text-decoration: none; transition: opacity .2s; }
+.nav-cta:hover { opacity: .85; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--charcoal); min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 100px 32px 60px; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,217,200,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(200,217,200,0.12); border: 1px solid rgba(200,217,200,0.2);
+  color: var(--sage); font-size: 12px; font-weight: 500; letter-spacing: .06em;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 32px;
+}
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--sage); border-radius: 50%; display: inline-block; }
+.hero-title {
+  font-size: clamp(42px, 6vw, 80px); font-weight: 300; line-height: 1.05;
+  letter-spacing: -3px; color: #F8F7F4; margin-bottom: 10px; max-width: 800px;
+}
+.hero-title strong { font-weight: 700; }
+.hero-accent { color: var(--sage); }
+.hero-sub {
+  font-size: clamp(16px, 2vw, 20px); color: rgba(248,247,244,0.5); font-weight: 300;
+  max-width: 520px; margin: 0 auto 48px; line-height: 1.7; letter-spacing: -0.2px;
+}
+.hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+.btn-main {
+  background: var(--sage-dk); color: #fff; padding: 14px 28px;
+  border-radius: var(--radius-sm); font-size: 15px; font-weight: 500;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: opacity .2s;
+}
+.btn-main:hover { opacity: .85; }
+.btn-ghost-hero {
+  background: transparent; color: rgba(248,247,244,0.7); padding: 14px 28px;
+  border-radius: var(--radius-sm); font-size: 15px; font-weight: 400;
+  text-decoration: none; border: 1px solid rgba(248,247,244,0.15);
+  display: inline-flex; align-items: center; gap: 8px; transition: all .2s;
+}
+.btn-ghost-hero:hover { border-color: rgba(248,247,244,0.35); color: #F8F7F4; }
+
+/* Hero counter card */
+.hero-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius); padding: 28px 36px; display: inline-flex;
+  flex-direction: column; align-items: center; gap: 8px; margin-bottom: 20px;
+  backdrop-filter: blur(8px);
+}
+.hero-card-label { font-size: 11px; font-weight: 500; color: var(--sage); text-transform: uppercase; letter-spacing: .1em; }
+.hero-counter { font-size: 48px; font-weight: 300; color: #F8F7F4; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+.hero-counter strong { font-weight: 600; }
+.hero-delta { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--sage); background: rgba(200,217,200,0.12); padding: 4px 12px; border-radius: 20px; }
+.hero-bar-wrap { width: 300px; margin: 0 auto; }
+.hero-bar-labels { display: flex; justify-content: space-between; font-size: 10px; color: rgba(248,247,244,0.3); margin-bottom: 6px; }
+.hero-bar-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
+.hero-bar-fill { height: 100%; background: linear-gradient(90deg, var(--sage) 0%, var(--sage-dk) 100%); border-radius: 10px; width: 0%; transition: width 1.8s cubic-bezier(.4,0,.2,1); }
+.hero-proof { display: flex; align-items: center; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.hero-proof-item { font-size: 12px; color: rgba(248,247,244,0.35); display: flex; align-items: center; gap: 6px; }
+.hero-proof-item i { font-size: 13px; color: var(--sage); }
+
+/* ── SECTION BASE ── */
+section { padding: 80px 32px; }
+.container { max-width: var(--max); margin: 0 auto; }
+.section-eyebrow { font-size: 11px; font-weight: 500; color: var(--sage-dk); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 14px; }
+.section-title { font-size: clamp(28px, 3.5vw, 44px); font-weight: 300; letter-spacing: -1.5px; color: var(--text); line-height: 1.1; margin-bottom: 14px; }
+.section-title strong { font-weight: 600; }
+.section-sub { font-size: 17px; color: var(--text2); max-width: 520px; line-height: 1.7; font-weight: 300; }
+
+/* ── PROBLEM ── */
+.problem { background: var(--ecru); }
+.problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 52px; }
+.problem-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+.problem-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.problem-icon i { font-size: 20px; }
+.problem-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.problem-text { font-size: 14px; color: var(--text2); line-height: 1.65; }
+
+/* ── SOLUTION ── */
+.solution { background: var(--charcoal); }
+.solution .section-title { color: #F8F7F4; }
+.solution .section-sub { color: rgba(248,247,244,0.5); }
+.solution .section-eyebrow { color: var(--sage); }
+.solution-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 52px; }
+.sol-card { border-radius: var(--radius); padding: 28px; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); }
+.sol-card:first-child { grid-column: span 2; background: rgba(200,217,200,0.06); border-color: rgba(200,217,200,0.15); }
+.sol-num { font-size: 11px; font-weight: 600; color: var(--sage); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
+.sol-title { font-size: 20px; font-weight: 600; color: #F8F7F4; margin-bottom: 8px; letter-spacing: -0.3px; }
+.sol-text { font-size: 14px; color: rgba(248,247,244,0.45); line-height: 1.65; }
+.sol-features { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.sol-feat { font-size: 12px; color: var(--sage); background: rgba(200,217,200,0.1); border: 1px solid rgba(200,217,200,0.15); padding: 4px 10px; border-radius: 20px; }
+
+/* ── DASHBOARD LIVE ── */
+.dashboard-section { background: var(--ecru); overflow: hidden; }
+.dash-preview {
+  margin-top: 52px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; box-shadow: 0 24px 80px rgba(44,44,42,0.1);
+}
+.dash-topbar { background: var(--charcoal); padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.dash-dots { display: flex; gap: 6px; }
+.dash-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dash-logo-bar { margin-left: 12px; display: flex; align-items: baseline; }
+.dash-my { font-weight: 300; color: #F8F7F4; font-size: 14px; }
+.dash-fin { font-weight: 600; color: var(--sage); font-size: 14px; }
+.dash-dot-logo { font-weight: 700; color: var(--sage); font-size: 14px; }
+.dash-inner { display: grid; grid-template-columns: 200px 1fr; }
+.dash-sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 20px 0; }
+.dash-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 12px; color: var(--text2); }
+.dash-nav-item.active { background: var(--sage-lt); color: var(--sage-dk); font-weight: 500; }
+.dash-nav-item i { font-size: 15px; }
+.dash-nav-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; padding: 12px 16px 4px; }
+.dash-content { padding: 20px; background: #F8F7F4; }
+.dash-nw { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 12px; }
+.dash-nw-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+.dash-nw-val { font-size: 28px; font-weight: 300; letter-spacing: -1px; margin-bottom: 10px; }
+.dash-nw-val strong { font-weight: 600; }
+.dash-bar-track { height: 6px; background: #F2F0EC; border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
+.dash-bar-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--sage) 0%, var(--sage-dk) 100%); width: 0%; transition: width 1.6s .4s cubic-bezier(.4,0,.2,1); }
+.dash-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.dash-chip { font-size: 10px; color: var(--text2); display: flex; align-items: center; gap: 4px; }
+.dash-chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+.dash-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.dash-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.dash-stat-lbl { font-size: 10px; color: var(--text2); margin-bottom: 4px; }
+.dash-stat-val { font-size: 16px; font-weight: 600; letter-spacing: -0.4px; }
+.dash-stat-trend { font-size: 10px; color: var(--sage-dk); margin-top: 3px; }
+
+/* ── TARGETS ── */
+.targets { background: var(--ecru); }
+.targets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 52px; }
+.target-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; position: relative; overflow: hidden; }
+.target-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.target-card.frontalier::before { background: var(--sage); }
+.target-card.suisse::before { background: var(--blue); }
+.target-card.france::before { background: var(--lavender); }
+.target-flag { font-size: 24px; margin-bottom: 14px; }
+.target-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.target-text { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 16px; }
+.target-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.target-pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); color: var(--text2); }
+
+/* ── PRICING ── */
+.pricing { background: var(--charcoal); }
+.pricing .section-title { color: #F8F7F4; }
+.pricing .section-sub { color: rgba(248,247,244,0.5); }
+.pricing .section-eyebrow { color: var(--sage); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 52px; }
+.price-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); padding: 28px; }
+.price-card.featured { background: rgba(200,217,200,0.08); border-color: rgba(200,217,200,0.3); position: relative; }
+.price-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); font-size: 11px; background: var(--sage-dk); color: #fff; padding: 3px 14px; border-radius: 0 0 10px 10px; font-weight: 500; white-space: nowrap; }
+.price-name { font-size: 14px; font-weight: 500; color: rgba(248,247,244,0.6); margin-bottom: 10px; }
+.price-amount { font-size: 38px; font-weight: 300; color: #F8F7F4; letter-spacing: -1.5px; margin-bottom: 4px; }
+.price-amount strong { font-weight: 600; }
+.price-freq { font-size: 13px; color: rgba(248,247,244,0.35); margin-bottom: 24px; }
+.price-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.price-feat { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: rgba(248,247,244,0.6); }
+.price-feat i { font-size: 14px; color: var(--sage); flex-shrink: 0; margin-top: 2px; }
+.price-btn { display: block; text-align: center; padding: 11px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; text-decoration: none; transition: all .2s; }
+.price-btn-ghost { border: 1px solid rgba(255,255,255,0.15); color: rgba(248,247,244,0.7); }
+.price-btn-ghost:hover { border-color: rgba(255,255,255,0.35); color: #F8F7F4; }
+.price-btn-main { background: var(--sage-dk); color: #fff; }
+.price-btn-main:hover { opacity: .85; }
+
+/* ── TESTIMONIALS ── */
+.testimonials { background: var(--ecru); }
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 52px; }
+.testi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.testi-stars { color: #D4A843; font-size: 13px; margin-bottom: 14px; letter-spacing: 1px; }
+.testi-text { font-size: 14px; color: var(--text); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+.testi-author { display: flex; align-items: center; gap: 10px; }
+.testi-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+.testi-name { font-size: 13px; font-weight: 500; }
+.testi-role { font-size: 11px; color: var(--text2); }
+
+/* ── CTA ── */
+.cta-section { background: var(--sage-dk); padding: 80px 32px; text-align: center; }
+.cta-title { font-size: clamp(28px, 4vw, 52px); font-weight: 300; color: #fff; letter-spacing: -2px; margin-bottom: 12px; }
+.cta-title strong { font-weight: 700; }
+.cta-sub { font-size: 17px; color: rgba(255,255,255,0.6); margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+.cta-form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 460px; margin: 0 auto 16px; }
+.cta-input { flex: 1; min-width: 220px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 14px; color: #fff; font-family: 'Inter', sans-serif; outline: none; }
+.cta-input::placeholder { color: rgba(255,255,255,0.45); }
+.cta-input:focus { border-color: rgba(255,255,255,0.5); }
+.cta-btn { background: #fff; color: var(--sage-dk); border: none; border-radius: var(--radius-sm); padding: 12px 22px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; transition: opacity .2s; }
+.cta-btn:hover { opacity: .9; }
+.cta-note { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+/* ── FOOTER ── */
+footer { background: var(--charcoal); padding: 52px 32px 32px; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-logo { display: flex; align-items: baseline; margin-bottom: 12px; text-decoration: none; }
+.f-my { font-size: 20px; font-weight: 300; color: #F8F7F4; }
+.f-fin { font-size: 20px; font-weight: 600; color: var(--sage); }
+.f-dot { font-size: 22px; font-weight: 700; color: var(--sage); }
+.footer-desc { font-size: 13px; color: rgba(248,247,244,0.35); line-height: 1.7; max-width: 240px; }
+.footer-col-title { font-size: 11px; font-weight: 500; color: rgba(248,247,244,0.35); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 14px; }
+.footer-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-links a { font-size: 13px; color: rgba(248,247,244,0.5); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: #F8F7F4; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-size: 12px; color: rgba(248,247,244,0.25); }
+.footer-badges { display: flex; gap: 10px; }
+.footer-badge { font-size: 10px; color: rgba(248,247,244,0.3); border: 1px solid rgba(255,255,255,0.08); padding: 3px 9px; border-radius: 20px; }
+
+/* ── ANIMATIONS ── */
+.fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity: 1; transform: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 16px; }
+  .nav-links { display: none; }
+  section { padding: 60px 16px; }
+  .problem-grid, .solution-grid, .targets-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+  .sol-card:first-child { grid-column: span 1; }
+  .dash-inner { grid-template-columns: 1fr; }
+  .dash-sidebar { display: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <span class="nav-my">my</span><span class="nav-fin">finance</span><span class="nav-dot">.</span>
+  </a>
+  <div class="nav-links">
+    <a href="#solution">Solution</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#cibles">Pour qui</a>
+    <a href="#simulateur">Simulateur</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#beta" class="nav-cta">Accès bêta</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-eyebrow">Bêta ouverte · Frontaliers franco-suisses</div>
+  <h1 class="hero-title">
+    votre patrimoine,<br><strong>clairement<span class="hero-accent">.</span></strong>
+  </h1>
+  <p class="hero-sub">Fiscalité franco-suisse, épargne, placements, contrats — tout ce que vous possédez, visible et optimisé depuis un seul endroit.</p>
+
+  <div class="hero-card">
+    <div class="hero-card-label">Patrimoine net · exemple client</div>
+    <div class="hero-counter">CHF <strong id="counterVal">0</strong></div>
+    <div class="hero-delta"><i class="ti ti-arrow-up-right"></i>+CHF 12 400 cette année</div>
+  </div>
+
+  <div class="hero-bar-wrap" style="margin-bottom:48px">
+    <div class="hero-bar-labels"><span>Immobilier</span><span>Épargne</span><span>Placements</span></div>
+    <div class="hero-bar-track"><div class="hero-bar-fill" id="heroBar"></div></div>
+  </div>
+
+  <div class="hero-ctas">
+    <a href="#beta" class="btn-main"><i class="ti ti-rocket"></i>Rejoindre la bêta</a>
+    <a href="#dashboard" class="btn-ghost-hero"><i class="ti ti-eye"></i>Voir le dashboard</a>
+  </div>
+
+  <div class="hero-proof">
+    <div class="hero-proof-item"><i class="ti ti-shield-check"></i>Données chiffrées en Suisse</div>
+    <div class="hero-proof-item"><i class="ti ti-lock"></i>Conformité RGPD & LPD</div>
+    <div class="hero-proof-item"><i class="ti ti-star"></i>Accès bêta gratuit 3 mois</div>
+  </div>
+</section>
+
+<!-- PROBLÈME -->
+<section class="problem" id="probleme">
+  <div class="container">
+    <div class="section-eyebrow fade-in">Le constat</div>
+    <h2 class="section-title fade-in">Gérer des finances franco-suisses,<br><strong>c'est compliqué.</strong></h2>
+    <p class="section-sub fade-in">Deux pays, deux systèmes fiscaux, deux monnaies. Et aucun outil qui comprend vraiment votre situation.</p>
+    <div class="problem-grid">
+      <div class="problem-card fade-in">
+        <div class="problem-icon" style="background:#FDF0EC"><i class="ti ti-files-off" style="color:#7A3F30"></i></div>
+        <div class="problem-title">Vos contrats éparpillés</div>
+        <p class="problem-text">Crédit immobilier, assurances, 3e pilier, Livret A — impossible d'avoir une vision globale. Vous découvrez les échéances trop tard.</p>
+      </div>
+      <div class="problem-card fade-in">
+        <div class="problem-icon" style="background:#FDF5EC"><i class="ti ti-calculator-off" style="color:#7A6348"></i></div>
+        <div class="problem-title">Fiscalité incomprise</div>
+        <p class="problem-text">Taux effectif, couple mixte, formulaire 3916, impôt à la source genevois — la déclaration française d'un frontalier est un vrai parcours du combattant.</p>
+      </div>
+      <div class="problem-card fade-in">
+        <div class="problem-icon" style="background:#EEF5F0"><i class="ti ti-trending-down" style="color:#4A6B4A"></i></div>
+        <div class="problem-title">Optimisations manquées</div>
+        <p class="problem-text">Rachat de 2e pilier, plafond du 3a non utilisé, délégation d'assurance prêt — des milliers de CHF laissés chaque année sur la table.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution" id="solution">
+  <div class="container">
+    <div class="section-eyebrow fade-in">Ce que fait myfinance.</div>
+    <h2 class="section-title fade-in">Un espace unique pour<br><strong>tout comprendre, tout optimiser<span style="color:var(--sage)">.</span></strong></h2>
+    <p class="section-sub fade-in">Pas un agrégateur de plus. Un conseiller patrimonial augmenté, conçu pour la réalité franco-suisse.</p>
+    <div class="solution-grid">
+      <div class="sol-card fade-in">
+        <div class="sol-num">Cœur du produit</div>
+        <div class="sol-title">Dashboard patrimoine en temps réel</div>
+        <p class="sol-text">Votre patrimoine net mis à jour en continu — immobilier, épargne, placements, prévoyance. Une barre de progression qui montre où vous en êtes par rapport à vos objectifs.</p>
+        <div class="sol-features">
+          <span class="sol-feat">Net worth live</span>
+          <span class="sol-feat">Projection 10 ans</span>
+          <span class="sol-feat">Allocation graphique</span>
+          <span class="sol-feat">Alertes intelligentes</span>
+        </div>
+      </div>
+      <div class="sol-card fade-in">
+        <div class="sol-num">Fiscalité</div>
+        <div class="sol-title">Simulateur IR franco-suisse</div>
+        <p class="sol-text">Calcul du taux effectif, quotient familial, couple mixte, formulaires 3916 et 2041-AS. Résultat en temps réel, économies identifiées automatiquement.</p>
+        <div class="sol-features">
+          <span class="sol-feat">Barème 2026</span>
+          <span class="sol-feat">Taux effectif CH</span>
+          <span class="sol-feat">Optimisations auto</span>
+        </div>
+      </div>
+      <div class="sol-card fade-in">
+        <div class="sol-num">Épargne & placements</div>
+        <div class="sol-title">3e pilier, IBKR, ETF — tout centralisé</div>
+        <p class="sol-text">Suivi de performance, rendement YTD, recommandations de rééquilibrage. Vos placements suisses et français dans une seule vue.</p>
+        <div class="sol-features">
+          <span class="sol-feat">Courbe de performance</span>
+          <span class="sol-feat">Analyse fiscale PFU</span>
+          <span class="sol-feat">Recommandations IA</span>
+        </div>
+      </div>
+      <div class="sol-card fade-in">
+        <div class="sol-num">Contrats</div>
+        <div class="sol-title">Coffre-fort intelligent</div>
+        <p class="sol-text">Tous vos contrats centralisés — crédit immo, assurances, mutuelles. Rappels automatiques avant chaque échéance, import par OCR.</p>
+        <div class="sol-features">
+          <span class="sol-feat">Import OCR</span>
+          <span class="sol-feat">Rappels d'échéance</span>
+          <span class="sol-feat">Économies détectées</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD LIVE -->
+<section class="dashboard-section" id="dashboard">
+  <div class="container">
+    <div class="section-eyebrow fade-in">Aperçu du produit</div>
+    <h2 class="section-title fade-in">Le dashboard <strong>myfinance<span style="color:var(--sage-dk)">.</span></strong></h2>
+    <p class="section-sub fade-in">Votre situation patrimoniale complète en un coup d'œil.</p>
+    <div class="dash-preview fade-in">
+      <div class="dash-topbar">
+        <div class="dash-dots">
+          <div class="dash-dot" style="background:#FF5F57"></div>
+          <div class="dash-dot" style="background:#FEBC2E"></div>
+          <div class="dash-dot" style="background:#28C840"></div>
+        </div>
+        <div class="dash-logo-bar">
+          <span class="dash-my">my</span><span class="dash-fin">finance</span><span class="dash-dot-logo">.</span>
+        </div>
+        <span style="font-size:11px;color:rgba(248,247,244,0.3);margin-left:auto">app.myfinance.ch · tableau de bord</span>
+      </div>
+      <div class="dash-inner">
+        <div class="dash-sidebar">
+          <div class="dash-nav-label">Vue d'ensemble</div>
+          <div class="dash-nav-item active"><i class="ti ti-layout-dashboard"></i>Tableau de bord</div>
+          <div class="dash-nav-item"><i class="ti ti-chart-pie"></i>Patrimoine</div>
+          <div class="dash-nav-label">Finances</div>
+          <div class="dash-nav-item"><i class="ti ti-piggy-bank"></i>Épargne</div>
+          <div class="dash-nav-item"><i class="ti ti-trending-up"></i>Placements</div>
+          <div class="dash-nav-item"><i class="ti ti-wallet"></i>Budget</div>
+          <div class="dash-nav-label">Documents</div>
+          <div class="dash-nav-item"><i class="ti ti-file-text"></i>Contrats</div>
+          <div class="dash-nav-item"><i class="ti ti-calculator"></i>Simulateurs</div>
+          <div class="dash-nav-item"><i class="ti ti-receipt-tax"></i>Fiscalité</div>
+        </div>
+        <div class="dash-content">
+          <div style="font-size:13px;color:var(--text2);margin-bottom:14px">Bonjour Nathan 👋 · 15 juin 2026</div>
+          <div class="dash-nw">
+            <div class="dash-nw-label">Patrimoine net</div>
+            <div class="dash-nw-val">CHF <strong>347 820</strong></div>
+            <div class="dash-bar-track"><div class="dash-bar-fill" id="dashBar"></div></div>
+            <div class="dash-chips">
+              <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--sage)"></div>Immobilier CHF 210k</div>
+              <div class="dash-chip" style="margin-left:10px"><div class="dash-chip-dot" style="background:var(--blue)"></div>Épargne CHF 89k</div>
+              <div class="dash-chip" style="margin-left:10px"><div class="dash-chip-dot" style="background:var(--lavender)"></div>Placements CHF 68k</div>
+            </div>
+          </div>
+          <div class="dash-stat-row">
+            <div class="dash-stat">
+              <div class="dash-stat-lbl">Épargne mensuelle</div>
+              <div class="dash-stat-val">CHF 1 240</div>
+              <div class="dash-stat-trend">↑ +8% ce mois</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-lbl">Rendement 2026</div>
+              <div class="dash-stat-val" style="color:var(--sage-dk)">+5,4%</div>
+              <div class="dash-stat-trend">↑ YTD portefeuille</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-lbl">Impôt IR estimé</div>
+              <div class="dash-stat-val">€ 4 820</div>
+              <div class="dash-stat-trend" style="color:var(--sage-dk)">−€ 820 optimisé</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CIBLES -->
+<section class="targets" id="cibles">
+  <div class="container">
+    <div class="section-eyebrow fade-in">Pour qui</div>
+    <h2 class="section-title fade-in">Conçu pour <strong>votre situation</strong></h2>
+    <p class="section-sub fade-in">myfinance. s'adapte à votre profil — qu'il soit franco-suisse, 100% suisse ou 100% français.</p>
+    <div class="targets-grid">
+      <div class="target-card frontalier fade-in">
+        <div class="target-flag">🇫🇷🇨🇭</div>
+        <div class="target-title">Frontaliers franco-suisses</div>
+        <p class="target-text">Vous résidez en France et travaillez en Suisse. myfinance. est fait pour vous — impôt à la source genevois, couple mixte, déclaration française avec taux effectif, 2e et 3e pilier.</p>
+        <div class="target-pills">
+          <span class="target-pill">Taux effectif</span>
+          <span class="target-pill">Couple mixte</span>
+          <span class="target-pill">3916 & 2041-AS</span>
+          <span class="target-pill">LPP & 3a</span>
+        </div>
+      </div>
+      <div class="target-card suisse fade-in">
+        <div class="target-flag">🇨🇭</div>
+        <div class="target-title">Résidents suisses</div>
+        <p class="target-text">Optimisation du 2e et 3e pilier, gestion de fortune, placements IBKR, planification retraite. Un dashboard patrimonial complet en CHF.</p>
+        <div class="target-pills">
+          <span class="target-pill">2e pilier</span>
+          <span class="target-pill">3a/3b</span>
+          <span class="target-pill">AVS</span>
+          <span class="target-pill">Placements</span>
+        </div>
+      </div>
+      <div class="target-card france fade-in">
+        <div class="target-flag">🇫🇷</div>
+        <div class="target-title">Résidents français</div>
+        <p class="target-text">Déclaration IR, PEA, assurance-vie, SCPI, flat tax, Livret A — myfinance. centralise tous vos actifs français avec des recommandations d'optimisation concrètes.</p>
+        <div class="target-pills">
+          <span class="target-pill">Déclaration IR</span>
+          <span class="target-pill">PEA</span>
+          <span class="target-pill">Flat tax 30%</span>
+          <span class="target-pill">SCPI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATEUR INTÉRÊTS COMPOSÉS -->
+<section style="background:var(--charcoal);padding:80px 32px;" id="simulateur">
+  <div class="container">
+    <div class="section-eyebrow fade-in" style="color:var(--sage)">Outil interactif · gratuit</div>
+    <h2 class="section-title fade-in" style="color:#F8F7F4">L'inaction a un prix<span style="color:var(--sage)">.</span></h2>
+    <p class="section-sub fade-in" style="color:rgba(248,247,244,0.5);margin-bottom:48px">Calculez ce que votre épargne peut devenir grâce aux intérêts composés — et ce que chaque année d'attente vous coûte réellement.</p>
+
+    <div class="fade-in" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);overflow:hidden;">
+
+      <!-- INPUTS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div style="padding:32px;border-right:1px solid rgba(255,255,255,0.07);">
+          <div style="font-size:11px;font-weight:600;color:var(--sage);text-transform:uppercase;letter-spacing:.1em;margin-bottom:24px">Votre situation</div>
+
+          <!-- Âge -->
+          <div style="margin-bottom:24px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <label style="font-size:13px;color:rgba(248,247,244,0.6);font-weight:500">Votre âge</label>
+              <span style="font-size:18px;font-weight:600;color:#F8F7F4;font-variant-numeric:tabular-nums" id="ageDisplay">35 ans</span>
+            </div>
+            <input type="range" id="ageSlider" min="18" max="64" value="35" step="1"
+              style="width:100%;accent-color:var(--sage-dk);cursor:pointer">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(248,247,244,0.25);margin-top:4px"><span>18 ans</span><span>64 ans</span></div>
+          </div>
+
+          <!-- Épargne mensuelle -->
+          <div style="margin-bottom:24px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <label style="font-size:13px;color:rgba(248,247,244,0.6);font-weight:500">Épargne mensuelle</label>
+              <span style="font-size:18px;font-weight:600;color:#F8F7F4;font-variant-numeric:tabular-nums" id="epDisplay">CHF 500</span>
+            </div>
+            <input type="range" id="epSlider" min="50" max="5000" value="500" step="50"
+              style="width:100%;accent-color:var(--sage-dk);cursor:pointer">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(248,247,244,0.25);margin-top:4px"><span>CHF 50</span><span>CHF 5 000</span></div>
+          </div>
+
+          <!-- Profil investisseur -->
+          <div>
+            <div style="font-size:13px;color:rgba(248,247,244,0.6);font-weight:500;margin-bottom:10px">Profil investisseur</div>
+            <div style="display:flex;flex-direction:column;gap:8px" id="profilGroup">
+              <div class="profil-btn active-profil" data-rate="0.04" data-label="Prudent" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(200,217,200,0.3);background:rgba(200,217,200,0.1);cursor:pointer;transition:all .2s">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:8px;height:8px;border-radius:50%;background:#B8CDD9;flex-shrink:0"></div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;color:#F8F7F4">Prudent</div>
+                    <div style="font-size:11px;color:rgba(248,247,244,0.4)">Fonds euros, obligations</div>
+                  </div>
+                </div>
+                <span style="font-size:13px;font-weight:600;color:var(--sage)">~4% / an</span>
+              </div>
+              <div class="profil-btn" data-rate="0.07" data-label="Équilibré" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:8px;height:8px;border-radius:50%;background:var(--sage);flex-shrink:0"></div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;color:#F8F7F4">Équilibré</div>
+                    <div style="font-size:11px;color:rgba(248,247,244,0.4)">Mix actions / obligations</div>
+                  </div>
+                </div>
+                <span style="font-size:13px;font-weight:600;color:var(--sage)">~7% / an</span>
+              </div>
+              <div class="profil-btn" data-rate="0.10" data-label="Dynamique" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:8px;height:8px;border-radius:50%;background:var(--lavender);flex-shrink:0"></div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;color:#F8F7F4">Dynamique</div>
+                    <div style="font-size:11px;color:rgba(248,247,244,0.4)">ETF actions mondiales</div>
+                  </div>
+                </div>
+                <span style="font-size:13px;font-weight:600;color:var(--sage)">~10% / an</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RÉSULTATS CHIFFRÉS -->
+        <div style="padding:32px;">
+          <div style="font-size:11px;font-weight:600;color:var(--sage);text-transform:uppercase;letter-spacing:.1em;margin-bottom:24px">Résultats à 65 ans</div>
+
+          <div style="margin-bottom:20px">
+            <div style="font-size:12px;color:rgba(248,247,244,0.4);margin-bottom:4px">Capital total projeté</div>
+            <div style="font-size:40px;font-weight:300;color:#F8F7F4;letter-spacing:-2px;line-height:1" id="capitalTotal">CHF 0</div>
+            <div style="font-size:13px;color:rgba(248,247,244,0.35);margin-top:4px" id="dureeLabel">sur <span id="dureeAns">30</span> ans</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+            <div style="background:rgba(184,205,217,0.1);border:1px solid rgba(184,205,217,0.2);border-radius:var(--radius-sm);padding:14px">
+              <div style="font-size:10px;color:rgba(184,205,217,0.7);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Capital versé</div>
+              <div style="font-size:20px;font-weight:600;color:#B8CDD9;font-variant-numeric:tabular-nums" id="capitalVerse">CHF 0</div>
+              <div style="font-size:11px;color:rgba(248,247,244,0.25);margin-top:3px">vos versements</div>
+            </div>
+            <div style="background:rgba(200,217,200,0.1);border:1px solid rgba(200,217,200,0.2);border-radius:var(--radius-sm);padding:14px">
+              <div style="font-size:10px;color:rgba(200,217,200,0.7);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Intérêts générés</div>
+              <div style="font-size:20px;font-weight:600;color:var(--sage);font-variant-numeric:tabular-nums" id="interetsGeneres">CHF 0</div>
+              <div style="font-size:11px;color:rgba(248,247,244,0.25);margin-top:3px">la magie des intérêts</div>
+            </div>
+          </div>
+
+          <!-- Alerte inaction -->
+          <div style="background:rgba(232,196,184,0.1);border:1px solid rgba(232,196,184,0.2);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px">
+            <div style="font-size:11px;font-weight:600;color:var(--coral);margin-bottom:4px;display:flex;align-items:center;gap:5px">
+              <i class="ti ti-alert-triangle" style="font-size:13px"></i>Le coût de l'inaction
+            </div>
+            <div style="font-size:13px;color:rgba(248,247,244,0.6);line-height:1.5">Attendre <strong style="color:#F8F7F4">1 an de plus</strong> vous coûtera <strong style="color:var(--coral)" id="coutInaction">CHF 0</strong> de capital final.</div>
+          </div>
+
+          <!-- Multiplicateur -->
+          <div style="display:flex;align-items:center;gap:8px;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:var(--radius-sm)">
+            <i class="ti ti-sparkles" style="color:var(--sage);font-size:16px;flex-shrink:0"></i>
+            <div style="font-size:13px;color:rgba(248,247,244,0.5);line-height:1.5">Vos versements sont <strong style="color:#F8F7F4" id="multiplicateur">×0</strong> grâce aux intérêts composés.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRAPHIQUE -->
+      <div style="padding:32px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div style="font-size:13px;font-weight:500;color:rgba(248,247,244,0.6)">Évolution du capital dans le temps</div>
+          <div style="display:flex;gap:16px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(248,247,244,0.4)">
+              <div style="width:24px;height:3px;background:#B8CDD9;border-radius:2px"></div>Capital versé
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(248,247,244,0.4)">
+              <div style="width:24px;height:3px;background:var(--sage-dk);border-radius:2px"></div>Capital total avec intérêts
+            </div>
+          </div>
+        </div>
+        <div style="position:relative;height:240px;">
+          <canvas id="chartCanvas" style="width:100%;height:100%"></canvas>
+          <div id="chartTooltip" style="position:absolute;background:rgba(44,44,42,0.95);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:10px 14px;font-size:12px;pointer-events:none;display:none;z-index:10;backdrop-filter:blur(8px)">
+            <div style="font-weight:600;color:#F8F7F4;margin-bottom:4px" id="ttAge"></div>
+            <div style="color:#B8CDD9;margin-bottom:2px">Versé : <span id="ttVerse"></span></div>
+            <div style="color:var(--sage)">Total : <span id="ttTotal"></span></div>
+          </div>
+        </div>
+        <!-- Axe X labels -->
+        <div style="display:flex;justify-content:space-between;margin-top:8px;padding:0 4px" id="xLabels"></div>
+      </div>
+
+      <!-- CTA FOOTER -->
+      <div style="padding:20px 32px;background:rgba(74,107,74,0.15);border-top:1px solid rgba(200,217,200,0.12);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:14px;font-weight:600;color:#F8F7F4;margin-bottom:2px">Prêt à agir aujourd'hui ?</div>
+          <div style="font-size:12px;color:rgba(248,247,244,0.4)">myfinance. vous accompagne pour mettre en place votre stratégie d'épargne.</div>
+        </div>
+        <a href="#beta" style="background:var(--sage-dk);color:#fff;padding:11px 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:8px;white-space:nowrap">
+          <i class="ti ti-rocket" style="font-size:15px"></i>Démarrer maintenant
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="tarifs">
+  <div class="container">
+    <div class="section-eyebrow fade-in">Tarifs</div>
+    <h2 class="section-title fade-in">Simple. <strong>Transparent<span style="color:var(--sage)">.</span></strong></h2>
+    <p class="section-sub fade-in">Sans engagement. Résiliable à tout moment. Accès bêta offert 3 mois sur tous les plans.</p>
+    <div class="pricing-grid">
+      <div class="price-card fade-in">
+        <div class="price-name">Essentiel</div>
+        <div class="price-amount">CHF <strong>149</strong></div>
+        <div class="price-freq">par an · soit CHF 12,40 / mois</div>
+        <div class="price-features">
+          <div class="price-feat"><i class="ti ti-check"></i>Simulateur fiscal frontalier</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Déclaration IR guidée</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Formulaires 3916 & 2041-AS</div>
+          <div class="price-feat"><i class="ti ti-check"></i>1 consultation 30 min</div>
+        </div>
+        <a href="#beta" class="price-btn price-btn-ghost">Commencer</a>
+      </div>
+      <div class="price-card featured fade-in">
+        <div class="price-badge">Recommandé frontaliers</div>
+        <div class="price-name">Optimisé</div>
+        <div class="price-amount">CHF <strong>390</strong></div>
+        <div class="price-freq">par an · soit CHF 32,50 / mois</div>
+        <div class="price-features">
+          <div class="price-feat"><i class="ti ti-check"></i>Tout Essentiel inclus</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Dashboard patrimoine complet</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Optimisation 2e & 3e pilier</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Suivi épargne & budget</div>
+          <div class="price-feat"><i class="ti ti-check"></i>3 consultations 45 min</div>
+        </div>
+        <a href="#beta" class="price-btn price-btn-main">Choisir Optimisé</a>
+      </div>
+      <div class="price-card fade-in">
+        <div class="price-name">Premium</div>
+        <div class="price-amount">CHF <strong>890</strong></div>
+        <div class="price-freq">par an · soit CHF 74,20 / mois</div>
+        <div class="price-features">
+          <div class="price-feat"><i class="ti ti-check"></i>Tout Optimisé inclus</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Gestion placements (IBKR)</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Coffre-fort contrats complet</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Projection retraite franco-CH</div>
+          <div class="price-feat"><i class="ti ti-check"></i>Accompagnement illimité</div>
+        </div>
+        <a href="#beta" class="price-btn price-btn-ghost">Choisir Premium</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section class="testimonials" id="temoignages">
+  <div class="container">
+    <div class="section-eyebrow fade-in">Ils utilisent myfinance.</div>
+    <h2 class="section-title fade-in">Ce que disent<br><strong>nos premiers utilisateurs</strong></h2>
+    <div class="testi-grid">
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">« Enfin un outil qui comprend ma situation de frontalier. Le simulateur fiscal m'a permis d'économiser plus de CHF 1 200 sur ma déclaration française. »</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:var(--sage-lt);color:var(--sage-dk)">SB</div>
+          <div>
+            <div class="testi-name">Sophie B.</div>
+            <div class="testi-role">Ingénieure · Genève / Ferney-Voltaire</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">« J'avais mes contrats partout. Maintenant tout est centralisé et j'ai même reçu une alerte 90 jours avant le renouvellement de mon assurance auto — j'ai changé et économisé CHF 240. »</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:var(--blue-lt);color:var(--blue-dk)">TM</div>
+          <div>
+            <div class="testi-name">Thomas M.</div>
+            <div class="testi-role">Consultant · Annemasse / Genève</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">« Le dashboard me donne enfin une vraie vision de mon patrimoine total — 3e pilier, IBKR, Livret A. En 10 minutes j'ai su exactement où j'en étais. »</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:var(--lavender-lt);color:var(--lavender-dk)">AL</div>
+          <div>
+            <div class="testi-name">Amélie L.</div>
+            <div class="testi-role">RH · Saint-Julien / Carouge</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="beta">
+  <div class="container">
+    <h2 class="cta-title">Prêt à voir votre<br><strong>patrimoine clairement<span style="color:rgba(255,255,255,0.5)">.</span></strong></h2>
+    <p class="cta-sub">Rejoignez les premiers utilisateurs bêta. Accès gratuit 3 mois. Aucune carte bancaire requise.</p>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="votre@email.com" id="emailInput">
+      <button class="cta-btn" onclick="handleSignup()">Rejoindre la bêta</button>
+    </div>
+    <div class="cta-note" id="ctaNote">Accès prioritaire · Tarif bêta garanti à vie · Réponse sous 24h</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <a class="footer-logo" href="#">
+          <span class="f-my">my</span><span class="f-fin">finance</span><span class="f-dot">.</span>
+        </a>
+        <p class="footer-desc">Votre patrimoine franco-suisse, simplifié et optimisé. Conçu par des experts de la fiscalité transfrontalière.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Produit</div>
+        <div class="footer-links">
+          <a href="#solution">Dashboard</a>
+          <a href="#solution">Simulateur fiscal</a>
+          <a href="#solution">Placements</a>
+          <a href="#solution">Contrats</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Société</div>
+        <div class="footer-links">
+          <a href="#">À propos</a>
+          <a href="#">Notre équipe</a>
+          <a href="#">Blog</a>
+          <a href="#">Presse</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-links">
+          <a href="#">hello@myfinance.ch</a>
+          <a href="#">Genève, Suisse</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Mentions légales</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 myfinance. Sàrl — Tous droits réservés</div>
+      <div class="footer-badges">
+        <span class="footer-badge">🇨🇭 Hébergé en Suisse</span>
+        <span class="footer-badge">RGPD · LPD</span>
+        <span class="footer-badge">SSL 256-bit</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Counter animation
+function animateCounter(target, duration) {
+  const el = document.getElementById('counterVal');
+  const start = 0;
+  const startTime = performance.now();
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(eased * target);
+    el.textContent = current.toLocaleString('fr-CH');
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// Intersection observer for animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Trigger dashboard bar
+      if (entry.target.classList.contains('dash-preview')) {
+        setTimeout(() => {
+          const bar = document.getElementById('dashBar');
+          if (bar) bar.style.width = '73%';
+        }, 300);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+document.querySelectorAll('.dash-preview').forEach(el => observer.observe(el));
+
+// Hero init
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('heroBar').style.width = '73%';
+    animateCounter(347820, 2000);
+  }, 400);
+});
+
+// CTA
+function handleSignup() {
+  const email = document.getElementById('emailInput').value;
+  const note = document.getElementById('ctaNote');
+  if (email && email.includes('@')) {
+    note.textContent = '✓ Inscription confirmée ! Vous recevrez votre accès sous 24h.';
+    note.style.color = 'rgba(255,255,255,0.8)';
+    document.getElementById('emailInput').value = '';
+  } else {
+    note.textContent = 'Veuillez entrer une adresse email valide.';
+    note.style.color = 'rgba(255,200,180,0.9)';
+  }
+}
+
+// ── SIMULATEUR INTÉRÊTS COMPOSÉS ──
+let currentRate = 0.04;
+let simAge = 35;
+let simEp = 500;
+
+function selectProfil(el) {
+  document.querySelectorAll('.profil-btn').forEach(b => {
+    b.style.background = 'rgba(255,255,255,0.03)';
+    b.style.borderColor = 'rgba(255,255,255,0.07)';
+  });
+  el.style.background = 'rgba(200,217,200,0.1)';
+  el.style.borderColor = 'rgba(200,217,200,0.3)';
+  currentRate = parseFloat(el.dataset.rate);
+  calcSim();
+}
+
+function fmtCHF(v) {
+  if (v >= 1000000) return 'CHF ' + (v/1000000).toFixed(2).replace('.',',') + ' M';
+  if (v >= 1000) return 'CHF ' + Math.round(v).toLocaleString('fr-CH');
+  return 'CHF ' + Math.round(v);
+}
+
+function calcSim() {
+  const age = simAge;
+  const monthly = simEp;
+  const rate = currentRate;
+  const retireAge = 65;
+  const years = Math.max(retireAge - age, 0);
+
+  // Build year-by-year data
+  const dataVerse = [];  // cumulative contributions
+  const dataTotal = [];  // capital with compound interest
+  const labels = [];
+
+  let capital = 0;
+  let totalVerse = 0;
+  const monthlyRate = rate / 12;
+
+  for (let y = 0; y <= years; y++) {
+    const a = age + y;
+    if (y > 0) {
+      for (let m = 0; m < 12; m++) {
+        capital = capital * (1 + monthlyRate) + monthly;
+        totalVerse += monthly;
+      }
+    }
+    dataVerse.push(totalVerse);
+    dataTotal.push(capital);
+    labels.push(a);
+  }
+
+  const finalTotal = Math.round(capital);
+  const finalVerse = Math.round(totalVerse);
+  const finalInterets = finalTotal - finalVerse;
+  const mult = finalVerse > 0 ? (finalTotal / finalVerse).toFixed(1) : 1;
+
+  // Cost of waiting 1 year
+  let capitalNext = 0;
+  const yearsNext = Math.max(years - 1, 0);
+  for (let y = 0; y < yearsNext * 12; y++) {
+    capitalNext = capitalNext * (1 + monthlyRate) + monthly;
+  }
+  const coutInaction = Math.max(0, finalTotal - Math.round(capitalNext));
+
+  // Update UI
+  animateValue('capitalTotal', finalTotal, fmtCHF);
+  animateValue('capitalVerse', finalVerse, fmtCHF);
+  animateValue('interetsGeneres', finalInterets, fmtCHF);
+  document.getElementById('dureeAns').textContent = years;
+  document.getElementById('multiplicateur').textContent = '×' + mult;
+  document.getElementById('coutInaction').textContent = fmtCHF(coutInaction);
+
+  drawChart(labels, dataVerse, dataTotal);
+}
+
+function animateValue(id, target, formatter) {
+  const el = document.getElementById(id);
+  const start = 0;
+  const dur = 600;
+  const t0 = performance.now();
+  function step(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = formatter(Math.round(eased * target));
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function drawChart(labels, dataVerse, dataTotal) {
+  const canvas = document.getElementById('chartCanvas');
+  if (!canvas) return;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const W = rect.width || 600;
+  const H = 240;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+
+  const padL = 60, padR = 20, padT = 10, padB = 30;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+
+  const maxVal = Math.max(...dataTotal, 1);
+
+  const scaleX = (i) => padL + (i / (labels.length - 1 || 1)) * chartW;
+  const scaleY = (v) => padT + chartH - (v / maxVal) * chartH;
+
+  // Grid lines
+  const gridCount = 4;
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= gridCount; i++) {
+    const y = padT + (i / gridCount) * chartH;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
+    const val = maxVal * (1 - i / gridCount);
+    ctx.fillStyle = 'rgba(248,247,244,0.25)';
+    ctx.font = '10px Inter';
+    ctx.textAlign = 'right';
+    if (val >= 1000000) ctx.fillText((val/1000000).toFixed(1)+'M', padL - 6, y + 3);
+    else if (val >= 1000) ctx.fillText(Math.round(val/1000)+'k', padL - 6, y + 3);
+    else ctx.fillText(Math.round(val), padL - 6, y + 3);
+  }
+
+  // Area fill — total
+  const gradTotal = ctx.createLinearGradient(0, padT, 0, padT + chartH);
+  gradTotal.addColorStop(0, 'rgba(74,107,74,0.35)');
+  gradTotal.addColorStop(1, 'rgba(74,107,74,0.02)');
+  ctx.beginPath();
+  ctx.moveTo(scaleX(0), scaleY(dataTotal[0]));
+  for (let i = 1; i < dataTotal.length; i++) ctx.lineTo(scaleX(i), scaleY(dataTotal[i]));
+  ctx.lineTo(scaleX(dataTotal.length - 1), padT + chartH);
+  ctx.lineTo(padL, padT + chartH);
+  ctx.closePath();
+  ctx.fillStyle = gradTotal;
+  ctx.fill();
+
+  // Area fill — versé
+  const gradVerse = ctx.createLinearGradient(0, padT, 0, padT + chartH);
+  gradVerse.addColorStop(0, 'rgba(184,205,217,0.25)');
+  gradVerse.addColorStop(1, 'rgba(184,205,217,0.02)');
+  ctx.beginPath();
+  ctx.moveTo(scaleX(0), scaleY(dataVerse[0]));
+  for (let i = 1; i < dataVerse.length; i++) ctx.lineTo(scaleX(i), scaleY(dataVerse[i]));
+  ctx.lineTo(scaleX(dataVerse.length - 1), padT + chartH);
+  ctx.lineTo(padL, padT + chartH);
+  ctx.closePath();
+  ctx.fillStyle = gradVerse;
+  ctx.fill();
+
+  // Line — versé
+  ctx.beginPath();
+  ctx.strokeStyle = '#B8CDD9';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 4]);
+  ctx.moveTo(scaleX(0), scaleY(dataVerse[0]));
+  for (let i = 1; i < dataVerse.length; i++) ctx.lineTo(scaleX(i), scaleY(dataVerse[i]));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Line — total
+  ctx.beginPath();
+  ctx.strokeStyle = '#4A6B4A';
+  ctx.lineWidth = 2.5;
+  ctx.moveTo(scaleX(0), scaleY(dataTotal[0]));
+  for (let i = 1; i < dataTotal.length; i++) ctx.lineTo(scaleX(i), scaleY(dataTotal[i]));
+  ctx.stroke();
+
+  // X axis labels
+  const xContainer = document.getElementById('xLabels');
+  xContainer.innerHTML = '';
+  const step = Math.max(1, Math.floor(labels.length / 6));
+  const shown = labels.filter((_, i) => i % step === 0 || i === labels.length - 1);
+  shown.forEach(a => {
+    const sp = document.createElement('span');
+    sp.textContent = a + ' ans';
+    sp.style.cssText = 'font-size:10px;color:rgba(248,247,244,0.25)';
+    xContainer.appendChild(sp);
+  });
+
+  // Tooltip interaction
+  canvas._labels = labels;
+  canvas._dataVerse = dataVerse;
+  canvas._dataTotal = dataTotal;
+  canvas._scaleX = scaleX;
+  canvas._scaleY = scaleY;
+  canvas._padL = padL;
+  canvas._chartW = chartW;
+}
+
+// Chart tooltip
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('chartCanvas');
+  if (!canvas) return;
+  canvas.addEventListener('mousemove', (e) => {
+    if (!canvas._labels) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const idx = Math.round((x - canvas._padL) / canvas._chartW * (canvas._labels.length - 1));
+    if (idx < 0 || idx >= canvas._labels.length) return;
+    const tt = document.getElementById('chartTooltip');
+    document.getElementById('ttAge').textContent = canvas._labels[idx] + ' ans';
+    document.getElementById('ttVerse').textContent = fmtCHF(canvas._dataVerse[idx]);
+    document.getElementById('ttTotal').textContent = fmtCHF(canvas._dataTotal[idx]);
+    tt.style.display = 'block';
+    const ttX = Math.min(x + 12, rect.width - 160);
+    tt.style.left = ttX + 'px';
+    tt.style.top = (e.clientY - rect.top - 60) + 'px';
+  });
+  canvas.addEventListener('mouseleave', () => {
+    document.getElementById('chartTooltip').style.display = 'none';
+  });
+});
+
+// Sliders
+const ageSlider = document.getElementById('ageSlider');
+const epSlider = document.getElementById('epSlider');
+if (ageSlider) {
+  ageSlider.addEventListener('input', e => {
+    simAge = parseInt(e.target.value);
+    document.getElementById('ageDisplay').textContent = simAge + ' ans';
+    calcSim();
+  });
+}
+if (epSlider) {
+  epSlider.addEventListener('input', e => {
+    simEp = parseInt(e.target.value);
+    document.getElementById('epDisplay').textContent = 'CHF ' + simEp.toLocaleString('fr-CH');
+    calcSim();
+  });
+}
+
+// Init sim on load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('ageDisplay').textContent = '35 ans';
+    document.getElementById('epDisplay').textContent = 'CHF 500';
+    calcSim();
+  }, 600);
+});
+
+// Resize chart
+window.addEventListener('resize', () => {
+  if (document.getElementById('chartCanvas')) calcSim();
+});
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 20) {
+    nav.style.borderBottomColor = 'rgba(255,255,255,0.1)';
+  } else {
+    nav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
+  }
+});
+</script>
+</body>
+</html>
