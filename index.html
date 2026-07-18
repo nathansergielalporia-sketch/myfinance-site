@@ -118,6 +118,9 @@ nav {
 .hero-bar-fill::after {
   content: ''; position: absolute; inset: 0; width: 55%;
   background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 50%, transparent 100%);
+  will-change: transform;
+}
+.hero-bar-fill.shimmer-active::after {
   animation: hero-bar-shimmer 2.4s linear infinite;
 }
 @keyframes hero-bar-shimmer {
@@ -125,7 +128,7 @@ nav {
   to { transform: translateX(240%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-bar-fill::after { animation: none; }
+  .hero-bar-fill.shimmer-active::after { animation: none; }
 }
 .hero-proof { display: flex; align-items: center; gap: 20px; justify-content: center; flex-wrap: wrap; }
 .hero-proof-item { font-size: 12px; color: rgba(248,247,244,0.35); display: flex; align-items: center; gap: 6px; }
@@ -933,7 +936,14 @@ document.querySelectorAll('.dash-preview').forEach(el => observer.observe(el));
 // Hero init
 window.addEventListener('load', () => {
   setTimeout(() => {
-    document.getElementById('heroBar').style.width = '73%';
+    const heroBar = document.getElementById('heroBar');
+    heroBar.style.width = '73%';
+    // Force a reflow before toggling the class (instead of having the animation
+    // active at CSS parse time). Without this, iOS Safari can fail to start
+    // compositing the shimmer until an unrelated reflow (e.g. a device rotation)
+    // wakes it up.
+    void heroBar.offsetWidth;
+    heroBar.classList.add('shimmer-active');
     animateCounter(347820, 2000);
   }, 400);
 });
