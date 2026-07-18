@@ -615,12 +615,12 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
         <div class="target-accent" id="targetAccent"></div>
         <div class="target-flag" id="targetFlag">🇫🇷🇨🇭</div>
         <div class="target-title" id="targetTitle">Frontaliers franco-suisses</div>
-        <p class="target-text" id="targetText">Vous résidez en France et travaillez en Suisse. myfinance. est fait pour vous — impôt à la source genevois, couple mixte, déclaration française avec taux effectif, 2e et 3e pilier.</p>
+        <p class="target-text" id="targetText">Vous résidez en France et travaillez en Suisse : impôt à la source genevois et 2e/3e pilier côté suisse, déclaration française avec taux effectif, quotient familial et formulaires 3916 & 2041-AS côté français. myfinance. centralise tout, des deux côtés de la frontière.</p>
         <div class="target-pills" id="targetPills">
-          <span class="target-pill">Taux effectif</span>
-          <span class="target-pill">Couple mixte</span>
+          <span class="target-pill">Impôt source CH</span>
+          <span class="target-pill">2e & 3e pilier</span>
+          <span class="target-pill">Taux effectif FR</span>
           <span class="target-pill">3916 & 2041-AS</span>
-          <span class="target-pill">LPP & 3a</span>
         </div>
       </div>
     </div>
@@ -1248,15 +1248,15 @@ const targetData = {
   frontalier: {
     flag: '🇫🇷🇨🇭',
     title: 'Frontaliers franco-suisses',
-    text: "Vous résidez en France et travaillez en Suisse. myfinance. est fait pour vous — impôt à la source genevois, couple mixte, déclaration française avec taux effectif, 2e et 3e pilier.",
-    pills: ['Taux effectif', 'Couple mixte', '3916 & 2041-AS', 'LPP & 3a'],
+    text: "Vous résidez en France et travaillez en Suisse : impôt à la source genevois et 2e/3e pilier côté suisse, déclaration française avec taux effectif, quotient familial et formulaires 3916 & 2041-AS côté français. myfinance. centralise tout, des deux côtés de la frontière.",
+    pills: ['Impôt source CH', '2e & 3e pilier', 'Taux effectif FR', '3916 & 2041-AS'],
     accent: 'var(--sage)'
   },
   resident: {
-    flag: '🇨🇭🇫🇷',
-    title: 'Résidents suisses ou français',
-    text: "Que vous résidiez uniquement en Suisse ou en France, myfinance. centralise votre patrimoine — 2e et 3e pilier, PEA, assurance-vie, gestion de fortune, déclaration IR — avec des recommandations concrètes.",
-    pills: ['2e pilier', 'PEA', 'Assurance-vie', 'Flat tax 30%'],
+    flag: '🇨🇭',
+    title: 'Résidents suisses',
+    text: "Vous vivez et travaillez en Suisse. myfinance. optimise votre 2e et 3e pilier, vos placements et votre fiscalité — avec, si vous le souhaitez, un accompagnement pour investir en France (immobilier locatif, SCPI) et diversifier votre patrimoine.",
+    pills: ['2e pilier', '3a/3b', 'AVS', 'Immobilier locatif FR'],
     accent: 'var(--blue)'
   }
 };
