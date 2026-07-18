@@ -78,19 +78,19 @@ nav {
   pointer-events: none;
 }
 .hero-logo {
-  display: flex; align-items: baseline; justify-content: center; gap: 0; margin-bottom: 32px;
+  display: flex; align-items: baseline; justify-content: center; gap: 0; margin-bottom: 20px;
 }
-.hero-logo-my { font-size: 22px; font-weight: 300; color: #F8F7F4; letter-spacing: -0.4px; text-shadow: 0 0 30px rgba(200,217,200,0.35); }
-.hero-logo-fin { font-size: 22px; font-weight: 600; color: var(--sage); letter-spacing: -0.4px; text-shadow: 0 0 30px rgba(200,217,200,0.55); }
-.hero-logo-dot { font-size: 24px; font-weight: 700; color: var(--sage); text-shadow: 0 0 30px rgba(200,217,200,0.55); }
+.hero-logo-my { font-size: clamp(28px, 3.4vw, 38px); font-weight: 300; color: #F8F7F4; letter-spacing: -0.6px; line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.35); }
+.hero-logo-fin { font-size: clamp(28px, 3.4vw, 38px); font-weight: 600; color: var(--sage); letter-spacing: -0.6px; line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.55); }
+.hero-logo-dot { font-size: clamp(30px, 3.6vw, 40px); font-weight: 700; color: var(--sage); line-height: 1; text-shadow: 0 0 34px rgba(200,217,200,0.55); }
 .hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; gap: 8px;
   background: rgba(200,217,200,0.12); border: 1px solid rgba(200,217,200,0.2);
-  color: var(--sage); font-size: 11px; font-weight: 500; letter-spacing: .06em;
-  padding: 4px 12px; border-radius: 20px; margin-bottom: 32px;
+  color: var(--sage); font-size: 12px; font-weight: 500; letter-spacing: .06em;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 32px;
 }
 .hero-eyebrow::before {
-  content: ''; width: 5px; height: 5px; background: var(--sage); border-radius: 50%; display: inline-block;
+  content: ''; width: 6px; height: 6px; background: var(--sage); border-radius: 50%; display: inline-block;
   animation: eyebrow-pulse 2.2s ease-in-out infinite;
 }
 @keyframes eyebrow-pulse {
