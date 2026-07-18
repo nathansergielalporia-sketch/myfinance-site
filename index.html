@@ -239,12 +239,24 @@ section { padding: 80px 32px; }
 
 /* ── TARGETS ── */
 .targets { background: var(--ecru); }
-.targets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 52px; }
-.target-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; position: relative; overflow: hidden; }
-.target-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.target-card.frontalier::before { background: var(--sage); }
-.target-card.suisse::before { background: var(--blue); }
-.target-card.france::before { background: var(--lavender); }
+.target-toggle {
+  display: inline-flex; gap: 4px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px; padding: 4px; margin: 40px auto 32px;
+}
+.target-toggle-btn {
+  border: none; background: transparent; padding: 10px 26px; border-radius: 999px;
+  font-size: 14px; font-weight: 500; color: var(--text2); cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: background .3s ease, color .3s ease;
+}
+.target-toggle-btn.active { background: var(--sage-dk); color: #fff; }
+.target-panel-wrap { max-width: 640px; margin: 0 auto; }
+.target-panel {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 32px; position: relative; overflow: hidden; text-align: left;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.target-panel.swap-out { opacity: 0; transform: translateY(10px) scale(.98); }
+.target-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--sage); transition: background .3s ease; }
 .target-flag { font-size: 24px; margin-bottom: 14px; }
 .target-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
 .target-text { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 16px; }
@@ -591,39 +603,24 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
   <div class="container">
     <div class="section-eyebrow fade-in">Pour qui</div>
     <h2 class="section-title fade-in">Conçu pour <strong>votre situation</strong></h2>
-    <p class="section-sub fade-in">myfinance. s'adapte à votre profil — qu'il soit franco-suisse, 100% suisse ou 100% français.</p>
-    <div class="targets-grid">
-      <div class="target-card frontalier fade-in">
-        <div class="target-flag">🇫🇷🇨🇭</div>
-        <div class="target-title">Frontaliers franco-suisses</div>
-        <p class="target-text">Vous résidez en France et travaillez en Suisse. myfinance. est fait pour vous — impôt à la source genevois, couple mixte, déclaration française avec taux effectif, 2e et 3e pilier.</p>
-        <div class="target-pills">
+    <p class="section-sub fade-in">myfinance. s'adapte à votre profil — frontalier ou résident, en Suisse comme en France.</p>
+
+    <div class="target-toggle fade-in" role="tablist">
+      <button class="target-toggle-btn active" onclick="setTargetProfile('frontalier', this)" role="tab" aria-selected="true">Frontalier</button>
+      <button class="target-toggle-btn" onclick="setTargetProfile('resident', this)" role="tab" aria-selected="false">Résident</button>
+    </div>
+
+    <div class="target-panel-wrap fade-in">
+      <div class="target-panel" id="targetPanel">
+        <div class="target-accent" id="targetAccent"></div>
+        <div class="target-flag" id="targetFlag">🇫🇷🇨🇭</div>
+        <div class="target-title" id="targetTitle">Frontaliers franco-suisses</div>
+        <p class="target-text" id="targetText">Vous résidez en France et travaillez en Suisse. myfinance. est fait pour vous — impôt à la source genevois, couple mixte, déclaration française avec taux effectif, 2e et 3e pilier.</p>
+        <div class="target-pills" id="targetPills">
           <span class="target-pill">Taux effectif</span>
           <span class="target-pill">Couple mixte</span>
           <span class="target-pill">3916 & 2041-AS</span>
           <span class="target-pill">LPP & 3a</span>
-        </div>
-      </div>
-      <div class="target-card suisse fade-in">
-        <div class="target-flag">🇨🇭</div>
-        <div class="target-title">Résidents suisses</div>
-        <p class="target-text">Optimisation du 2e et 3e pilier, gestion de fortune, placements IBKR, planification retraite. Un dashboard patrimonial complet en CHF.</p>
-        <div class="target-pills">
-          <span class="target-pill">2e pilier</span>
-          <span class="target-pill">3a/3b</span>
-          <span class="target-pill">AVS</span>
-          <span class="target-pill">Placements</span>
-        </div>
-      </div>
-      <div class="target-card france fade-in">
-        <div class="target-flag">🇫🇷</div>
-        <div class="target-title">Résidents français</div>
-        <p class="target-text">Déclaration IR, PEA, assurance-vie, SCPI, flat tax, Livret A — myfinance. centralise tous vos actifs français avec des recommandations d'optimisation concrètes.</p>
-        <div class="target-pills">
-          <span class="target-pill">Déclaration IR</span>
-          <span class="target-pill">PEA</span>
-          <span class="target-pill">Flat tax 30%</span>
-          <span class="target-pill">SCPI</span>
         </div>
       </div>
     </div>
@@ -1245,6 +1242,47 @@ window.addEventListener('resize', () => {
   lastViewportWidth = window.innerWidth;
   if (document.getElementById('chartCanvas')) calcSim();
 });
+
+// ── TOGGLE "POUR QUI" (Frontalier / Résident) ──
+const targetData = {
+  frontalier: {
+    flag: '🇫🇷🇨🇭',
+    title: 'Frontaliers franco-suisses',
+    text: "Vous résidez en France et travaillez en Suisse. myfinance. est fait pour vous — impôt à la source genevois, couple mixte, déclaration française avec taux effectif, 2e et 3e pilier.",
+    pills: ['Taux effectif', 'Couple mixte', '3916 & 2041-AS', 'LPP & 3a'],
+    accent: 'var(--sage)'
+  },
+  resident: {
+    flag: '🇨🇭🇫🇷',
+    title: 'Résidents suisses ou français',
+    text: "Que vous résidiez uniquement en Suisse ou en France, myfinance. centralise votre patrimoine — 2e et 3e pilier, PEA, assurance-vie, gestion de fortune, déclaration IR — avec des recommandations concrètes.",
+    pills: ['2e pilier', 'PEA', 'Assurance-vie', 'Flat tax 30%'],
+    accent: 'var(--blue)'
+  }
+};
+
+function setTargetProfile(key, btn) {
+  if (btn.classList.contains('active')) return;
+  document.querySelectorAll('.target-toggle-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+
+  const panel = document.getElementById('targetPanel');
+  const d = targetData[key];
+  panel.classList.add('swap-out');
+  setTimeout(() => {
+    document.getElementById('targetFlag').textContent = d.flag;
+    document.getElementById('targetTitle').textContent = d.title;
+    document.getElementById('targetText').textContent = d.text;
+    document.getElementById('targetAccent').style.background = d.accent;
+    document.getElementById('targetPills').innerHTML =
+      d.pills.map(p => `<span class="target-pill">${p}</span>`).join('');
+    panel.classList.remove('swap-out');
+  }, 220);
+}
 
 // Mobile nav toggle
 function toggleMobileNav() {
