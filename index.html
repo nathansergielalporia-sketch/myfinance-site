@@ -556,7 +556,7 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
           <div>
             <div style="font-size:13px;color:rgba(248,247,244,0.6);font-weight:500;margin-bottom:10px">Profil investisseur</div>
             <div style="display:flex;flex-direction:column;gap:8px" id="profilGroup">
-              <div class="profil-btn active-profil" data-rate="0.04" data-label="Prudent" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(200,217,200,0.3);background:rgba(200,217,200,0.1);cursor:pointer;transition:all .2s">
+              <div class="profil-btn active-profil" data-rate="0.02" data-label="Prudent" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(200,217,200,0.3);background:rgba(200,217,200,0.1);cursor:pointer;transition:all .2s">
                 <div style="display:flex;align-items:center;gap:10px">
                   <div style="width:8px;height:8px;border-radius:50%;background:#B8CDD9;flex-shrink:0"></div>
                   <div>
@@ -564,9 +564,9 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
                     <div style="font-size:11px;color:rgba(248,247,244,0.4)">Fonds euros, obligations</div>
                   </div>
                 </div>
-                <span style="font-size:13px;font-weight:600;color:var(--sage)">~4% / an</span>
+                <span style="font-size:13px;font-weight:600;color:var(--sage)">~2% / an</span>
               </div>
-              <div class="profil-btn" data-rate="0.07" data-label="Équilibré" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s">
+              <div class="profil-btn" data-rate="0.06" data-label="Équilibré" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s">
                 <div style="display:flex;align-items:center;gap:10px">
                   <div style="width:8px;height:8px;border-radius:50%;background:var(--sage);flex-shrink:0"></div>
                   <div>
@@ -574,9 +574,9 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
                     <div style="font-size:11px;color:rgba(248,247,244,0.4)">Mix actions / obligations</div>
                   </div>
                 </div>
-                <span style="font-size:13px;font-weight:600;color:var(--sage)">~7% / an</span>
+                <span style="font-size:13px;font-weight:600;color:var(--sage)">~6% / an</span>
               </div>
-              <div class="profil-btn" data-rate="0.10" data-label="Dynamique" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s">
+              <div class="profil-btn" data-rate="0.08" data-label="Dynamique" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s">
                 <div style="display:flex;align-items:center;gap:10px">
                   <div style="width:8px;height:8px;border-radius:50%;background:var(--lavender);flex-shrink:0"></div>
                   <div>
@@ -584,7 +584,7 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
                     <div style="font-size:11px;color:rgba(248,247,244,0.4)">ETF actions mondiales</div>
                   </div>
                 </div>
-                <span style="font-size:13px;font-weight:600;color:var(--sage)">~10% / an</span>
+                <span style="font-size:13px;font-weight:600;color:var(--sage)">~8% / an</span>
               </div>
             </div>
           </div>
@@ -883,7 +883,7 @@ function handleSignup() {
 }
 
 // ── SIMULATEUR INTÉRÊTS COMPOSÉS ──
-let currentRate = 0.04;
+let currentRate = 0.02;
 let simAge = 35;
 let simEp = 500;
 
