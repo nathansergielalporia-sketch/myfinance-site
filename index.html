@@ -77,14 +77,20 @@ nav {
   background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,217,200,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
+.hero-logo {
+  display: flex; align-items: baseline; justify-content: center; gap: 0; margin-bottom: 32px;
+}
+.hero-logo-my { font-size: 22px; font-weight: 300; color: #F8F7F4; letter-spacing: -0.4px; text-shadow: 0 0 30px rgba(200,217,200,0.35); }
+.hero-logo-fin { font-size: 22px; font-weight: 600; color: var(--sage); letter-spacing: -0.4px; text-shadow: 0 0 30px rgba(200,217,200,0.55); }
+.hero-logo-dot { font-size: 24px; font-weight: 700; color: var(--sage); text-shadow: 0 0 30px rgba(200,217,200,0.55); }
 .hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex; align-items: center; gap: 6px;
   background: rgba(200,217,200,0.12); border: 1px solid rgba(200,217,200,0.2);
-  color: var(--sage); font-size: 12px; font-weight: 500; letter-spacing: .06em;
-  padding: 5px 14px; border-radius: 20px; margin-bottom: 32px;
+  color: var(--sage); font-size: 11px; font-weight: 500; letter-spacing: .06em;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 32px;
 }
 .hero-eyebrow::before {
-  content: ''; width: 6px; height: 6px; background: var(--sage); border-radius: 50%; display: inline-block;
+  content: ''; width: 5px; height: 5px; background: var(--sage); border-radius: 50%; display: inline-block;
   animation: eyebrow-pulse 2.2s ease-in-out infinite;
 }
 @keyframes eyebrow-pulse {
@@ -145,16 +151,17 @@ nav {
   from { background-position: -150% 0, 0 0; }
   to { background-position: 250% 0, 0 0; }
 }
-.hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
+.hero-logo, .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
   opacity: 0; animation: hero-reveal .9s cubic-bezier(.16,1,.3,1) forwards;
 }
-.hero-eyebrow { animation-delay: .05s; }
-.hero-title { animation-delay: .15s; }
-.hero-sub { animation-delay: .28s; }
-.hero-card { animation-delay: .4s; }
-.hero-bar-wrap { animation-delay: .5s; }
-.hero-ctas { animation-delay: .6s; }
-.hero-proof { animation-delay: .7s; }
+.hero-logo { animation-delay: 0s; }
+.hero-eyebrow { animation-delay: .1s; }
+.hero-title { animation-delay: .2s; }
+.hero-sub { animation-delay: .32s; }
+.hero-card { animation-delay: .44s; }
+.hero-bar-wrap { animation-delay: .54s; }
+.hero-ctas { animation-delay: .64s; }
+.hero-proof { animation-delay: .74s; }
 @keyframes hero-reveal {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
@@ -162,7 +169,7 @@ nav {
 @media (prefers-reduced-motion: reduce) {
   .hero-bar-fill { animation: none; }
   .hero-eyebrow::before { animation: none; }
-  .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
+  .hero-logo, .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
     animation: none; opacity: 1;
   }
   .multiplier-box, .inaction-box, .value-flash { animation: none; }
@@ -465,6 +472,9 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 
 <!-- HERO -->
 <section class="hero" id="hero">
+  <div class="hero-logo">
+    <span class="hero-logo-my">my</span><span class="hero-logo-fin">finance</span><span class="hero-logo-dot">.</span>
+  </div>
   <div class="hero-eyebrow">Conçu pour les frontaliers franco-suisses</div>
   <h1 class="hero-title">
     votre patrimoine,<br><strong>clairement<span class="hero-accent">.</span></strong>
