@@ -78,12 +78,19 @@ nav {
   color: var(--sage); font-size: 12px; font-weight: 500; letter-spacing: .06em;
   padding: 5px 14px; border-radius: 20px; margin-bottom: 32px;
 }
-.hero-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--sage); border-radius: 50%; display: inline-block; }
+.hero-eyebrow::before {
+  content: ''; width: 6px; height: 6px; background: var(--sage); border-radius: 50%; display: inline-block;
+  animation: eyebrow-pulse 2.2s ease-in-out infinite;
+}
+@keyframes eyebrow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200,217,200,0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(200,217,200,0); }
+}
 .hero-title {
-  font-size: clamp(46px, 6.5vw, 88px); font-weight: 300; line-height: 1.05;
+  font-size: clamp(46px, 6.8vw, 94px); font-weight: 300; line-height: 1.04;
   letter-spacing: -3px; color: #F8F7F4; margin-bottom: 10px; max-width: 800px;
 }
-.hero-title strong { font-weight: 700; }
+.hero-title strong { font-weight: 700; text-shadow: 0 0 50px rgba(200,217,200,0.3); }
 .hero-accent { color: var(--sage); }
 .hero-sub {
   font-size: clamp(16px, 2vw, 20px); color: rgba(248,247,244,0.5); font-weight: 300;
@@ -133,8 +140,26 @@ nav {
   from { background-position: -150% 0, 0 0; }
   to { background-position: 250% 0, 0 0; }
 }
+.hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
+  opacity: 0; animation: hero-reveal .9s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-eyebrow { animation-delay: .05s; }
+.hero-title { animation-delay: .15s; }
+.hero-sub { animation-delay: .28s; }
+.hero-card { animation-delay: .4s; }
+.hero-bar-wrap { animation-delay: .5s; }
+.hero-ctas { animation-delay: .6s; }
+.hero-proof { animation-delay: .7s; }
+@keyframes hero-reveal {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-bar-fill { animation: none; }
+  .hero-eyebrow::before { animation: none; }
+  .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
+    animation: none; opacity: 1;
+  }
 }
 .hero-proof { display: flex; align-items: center; gap: 20px; justify-content: center; flex-wrap: wrap; }
 .hero-proof-item { font-size: 12px; color: rgba(248,247,244,0.35); display: flex; align-items: center; gap: 6px; }
@@ -381,11 +406,11 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-eyebrow">Bêta ouverte · Frontaliers franco-suisses</div>
+  <div class="hero-eyebrow">🇫🇷🇨🇭 Le seul outil pensé pour les frontaliers</div>
   <h1 class="hero-title">
     votre patrimoine,<br><strong>clairement<span class="hero-accent">.</span></strong>
   </h1>
-  <p class="hero-sub">Fiscalité franco-suisse, épargne, placements, contrats — tout ce que vous possédez, visible et optimisé depuis un seul endroit.</p>
+  <p class="hero-sub">Deux pays, deux fiscalités, un seul endroit pour tout voir clair. Découvrez comment reprendre le contrôle de votre patrimoine, dès aujourd'hui.</p>
 
   <div class="hero-card">
     <div class="hero-card-label">Patrimoine net · exemple client</div>
