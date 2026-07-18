@@ -165,6 +165,47 @@ nav {
   .hero-eyebrow, .hero-title, .hero-sub, .hero-card, .hero-bar-wrap, .hero-ctas, .hero-proof {
     animation: none; opacity: 1;
   }
+  .multiplier-box, .inaction-box, .value-flash { animation: none; }
+}
+
+/* ── INFO POPOVER ── */
+.info-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(255,255,255,0.08); border: none; color: rgba(248,247,244,0.55);
+  cursor: pointer; font-size: 12px; padding: 0; transition: background .2s, color .2s;
+}
+.info-btn:hover { background: rgba(200,217,200,0.18); color: var(--sage); }
+.info-popover {
+  position: absolute; top: 26px; left: 0; z-index: 20; width: 280px; max-width: 80vw;
+  background: rgba(28,28,27,0.98); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
+  padding: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  opacity: 0; transform: translateY(-6px) scale(.97); pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.info-popover.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.info-popover-row { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.info-popover-row:last-of-type { border-bottom: none; }
+.info-popover-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.info-popover-title { font-size: 12.5px; font-weight: 600; color: #F8F7F4; }
+.info-popover-desc { font-size: 11.5px; color: rgba(248,247,244,0.5); line-height: 1.5; margin-top: 2px; }
+.info-popover-note { font-size: 10.5px; color: rgba(248,247,244,0.35); margin-top: 10px; line-height: 1.5; font-style: italic; }
+
+/* ── SIMULATEUR : mise en avant des valeurs clés ── */
+@keyframes value-flash {
+  0% { background-color: rgba(200,217,200,0.35); }
+  100% { background-color: transparent; }
+}
+.value-flash { animation: value-flash .9s ease-out; border-radius: 6px; }
+.multiplier-box { animation: multiplier-glow 2.6s ease-in-out infinite; }
+@keyframes multiplier-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200,217,200,0.18); }
+  50% { box-shadow: 0 0 0 6px rgba(200,217,200,0); }
+}
+.inaction-box { animation: inaction-glow 2.6s ease-in-out infinite; }
+@keyframes inaction-glow {
+  0%, 100% { border-color: rgba(232,196,184,0.2); }
+  50% { border-color: rgba(232,196,184,0.55); }
 }
 .hero-proof { display: flex; align-items: center; gap: 20px; justify-content: center; flex-wrap: wrap; }
 .hero-proof-item { font-size: 12px; color: rgba(248,247,244,0.35); display: flex; align-items: center; gap: 6px; }
@@ -665,7 +706,36 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 
           <!-- Profil investisseur -->
           <div>
-            <div style="font-size:13px;color:rgba(248,247,244,0.6);font-weight:500;margin-bottom:10px">Profil investisseur</div>
+            <div style="font-size:13px;color:rgba(248,247,244,0.6);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:6px;position:relative">
+              Profil investisseur
+              <button class="info-btn" type="button" onclick="toggleProfilInfo(event)" aria-label="En savoir plus sur les profils investisseur">
+                <i class="ti ti-info-circle"></i>
+              </button>
+              <div class="info-popover" id="profilInfoPopover">
+                <div class="info-popover-row">
+                  <div class="info-popover-dot" style="background:#B8CDD9"></div>
+                  <div>
+                    <div class="info-popover-title">Prudent · ~2%/an</div>
+                    <div class="info-popover-desc">Fonds euros et obligations. Risque très faible, capital quasi protégé — adapté à un horizon court ou si vous ne supportez pas les baisses.</div>
+                  </div>
+                </div>
+                <div class="info-popover-row">
+                  <div class="info-popover-dot" style="background:var(--sage)"></div>
+                  <div>
+                    <div class="info-popover-title">Équilibré · ~6%/an</div>
+                    <div class="info-popover-desc">Mix actions / obligations. Bon compromis entre sécurité et performance — pertinent à partir de 5-10 ans.</div>
+                  </div>
+                </div>
+                <div class="info-popover-row">
+                  <div class="info-popover-dot" style="background:var(--lavender)"></div>
+                  <div>
+                    <div class="info-popover-title">Dynamique · ~8%/an</div>
+                    <div class="info-popover-desc">ETF actions mondiales. Plus volatil à court terme, mais le meilleur potentiel sur 10 ans et plus.</div>
+                  </div>
+                </div>
+                <div class="info-popover-note">Rendements indicatifs et non garantis, à titre d'illustration.</div>
+              </div>
+            </div>
             <div style="display:flex;flex-direction:column;gap:8px" id="profilGroup">
               <div class="profil-btn active-profil" data-rate="0.02" data-label="Prudent" onclick="selectProfil(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(200,217,200,0.3);background:rgba(200,217,200,0.1);cursor:pointer;transition:all .2s">
                 <div style="display:flex;align-items:center;gap:10px">
@@ -718,14 +788,14 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
               <div style="font-size:11px;color:rgba(248,247,244,0.25);margin-top:3px">vos versements</div>
             </div>
             <div style="background:rgba(200,217,200,0.1);border:1px solid rgba(200,217,200,0.2);border-radius:var(--radius-sm);padding:14px">
-              <div style="font-size:10px;color:rgba(200,217,200,0.7);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Intérêts générés</div>
+              <div style="font-size:10px;color:rgba(200,217,200,0.7);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:4px"><i class="ti ti-trending-up" style="font-size:12px"></i>Intérêts générés</div>
               <div style="font-size:20px;font-weight:600;color:var(--sage);font-variant-numeric:tabular-nums" id="interetsGeneres">CHF 0</div>
               <div style="font-size:11px;color:rgba(248,247,244,0.25);margin-top:3px">la magie des intérêts</div>
             </div>
           </div>
 
           <!-- Alerte inaction -->
-          <div style="background:rgba(232,196,184,0.1);border:1px solid rgba(232,196,184,0.2);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px">
+          <div class="inaction-box" style="background:rgba(232,196,184,0.1);border:1px solid rgba(232,196,184,0.2);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px">
             <div style="font-size:11px;font-weight:600;color:var(--coral);margin-bottom:4px;display:flex;align-items:center;gap:5px">
               <i class="ti ti-alert-triangle" style="font-size:13px"></i>Le coût de l'inaction
             </div>
@@ -733,9 +803,9 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
           </div>
 
           <!-- Multiplicateur -->
-          <div style="display:flex;align-items:center;gap:8px;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:var(--radius-sm)">
-            <i class="ti ti-sparkles" style="color:var(--sage);font-size:16px;flex-shrink:0"></i>
-            <div style="font-size:13px;color:rgba(248,247,244,0.5);line-height:1.5">Vos versements sont <strong style="color:#F8F7F4" id="multiplicateur">×0</strong> grâce aux intérêts composés.</div>
+          <div class="multiplier-box" style="display:flex;align-items:center;gap:10px;padding:14px;background:rgba(200,217,200,0.07);border:1px solid rgba(200,217,200,0.18);border-radius:var(--radius-sm)">
+            <i class="ti ti-sparkles" style="color:var(--sage);font-size:18px;flex-shrink:0"></i>
+            <div style="font-size:13px;color:rgba(248,247,244,0.55);line-height:1.5">Vos versements sont <strong style="color:var(--sage);font-size:17px" id="multiplicateur">×0</strong> grâce aux intérêts composés.</div>
           </div>
         </div>
       </div>
@@ -1064,9 +1134,30 @@ function calcSim() {
   document.getElementById('dureeAns').textContent = years;
   document.getElementById('multiplicateur').textContent = '×' + mult;
   document.getElementById('coutInaction').textContent = fmtCHF(coutInaction);
+  ['capitalTotal', 'capitalVerse', 'interetsGeneres', 'multiplicateur', 'coutInaction'].forEach(flashElement);
 
   drawChart(labels, dataVerse, dataTotal);
 }
+
+function flashElement(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('value-flash');
+  void el.offsetWidth;
+  el.classList.add('value-flash');
+}
+
+// Popover "Profil investisseur"
+function toggleProfilInfo(e) {
+  e.stopPropagation();
+  document.getElementById('profilInfoPopover').classList.toggle('open');
+}
+document.addEventListener('click', (e) => {
+  const pop = document.getElementById('profilInfoPopover');
+  if (pop && pop.classList.contains('open') && !pop.contains(e.target) && e.target.closest('.info-btn') === null) {
+    pop.classList.remove('open');
+  }
+});
 
 function animateValue(id, target, formatter) {
   const el = document.getElementById(id);
