@@ -121,11 +121,12 @@ nav {
     linear-gradient(90deg, var(--sage) 0%, var(--sage-dk) 100%);
   background-size: 60% 100%, 100% 100%;
   background-repeat: no-repeat, no-repeat;
-  background-position: -60% 0, 0 0;
-  animation: hero-bar-shimmer 2.4s linear infinite;
+  background-position: -150% 0, 0 0;
+  animation: hero-bar-shimmer 2s linear infinite;
 }
 @keyframes hero-bar-shimmer {
-  to { background-position: 160% 0, 0 0; }
+  from { background-position: -150% 0, 0 0; }
+  to { background-position: 250% 0, 0 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-bar-fill { animation: none; }
