@@ -54,6 +54,7 @@ nav {
 .nav-links a:hover { color: #F8F7F4; }
 .nav-cta { background: var(--sage-dk); color: #fff !important; padding: 7px 18px; border-radius: var(--radius-sm); font-weight: 500 !important; font-size: 13px; text-decoration: none; transition: opacity .2s; }
 .nav-cta:hover { opacity: .85; }
+.nav-burger { display: none; background: none; border: none; color: #F8F7F4; font-size: 22px; cursor: pointer; padding: 10px; line-height: 1; }
 
 /* ── HERO ── */
 .hero {
@@ -269,13 +270,67 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   nav { padding: 0 16px; }
-  .nav-links { display: none; }
+
+  /* Hamburger menu */
+  .nav-burger { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+  .nav-links {
+    display: none;
+    position: fixed; top: 60px; left: 0; right: 0;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: rgba(44,44,42,0.98); backdrop-filter: blur(12px);
+    padding: 4px 16px 20px; max-height: calc(100vh - 60px); overflow-y: auto;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 16px; padding: 14px 4px; min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .nav-links a:last-child { border-bottom: none; }
+  .nav-links .nav-cta { margin-top: 12px; justify-content: center; padding: 14px; }
+
   section { padding: 60px 16px; }
+
+  /* Hero */
+  .hero { padding: 88px 20px 48px; }
+  .hero-title { font-size: clamp(32px, 9vw, 46px); letter-spacing: -1.5px; }
+  .hero-sub { font-size: 16px; margin-bottom: 36px; }
+  .hero-card { padding: 20px 22px; max-width: 100%; }
+  .hero-counter { font-size: clamp(28px, 9vw, 36px); }
+  .hero-bar-wrap { width: 100%; max-width: 300px; }
+  .hero-ctas { flex-direction: column; width: 100%; }
+  .hero-ctas a { width: 100%; justify-content: center; }
+  .hero-proof { flex-direction: column; gap: 10px; }
+
+  /* Cards & grids: single column */
   .problem-grid, .solution-grid, .targets-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
   .sol-card:first-child { grid-column: span 1; }
   .dash-inner { grid-template-columns: 1fr; }
   .dash-sidebar { display: none; }
-  .footer-top { grid-template-columns: 1fr 1fr; }
+  .dash-topbar-meta { display: none; }
+  .dash-stat-row { grid-template-columns: 1fr; gap: 8px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+
+  /* Readable body text (>=16px) */
+  .problem-text, .sol-text, .target-text, .testi-text, .price-feat, .footer-desc { font-size: 16px; line-height: 1.6; }
+
+  /* Thumb-friendly tap targets (>=44px) */
+  .btn-main, .btn-ghost-hero, .price-btn, .cta-btn, .nav-cta { min-height: 44px; }
+  .price-btn { padding: 14px; font-size: 16px; }
+  .cta-btn { padding: 14px 22px; font-size: 16px; }
+  .cta-form { flex-direction: column; }
+  .cta-input, .cta-btn { width: 100%; }
+  .cta-input { font-size: 16px; }
+  .footer-links a { padding: 8px 0; font-size: 15px; }
+
+  /* Simulator: stack columns, usable sliders */
+  #simulateur { padding: 60px 16px !important; }
+  #simInputsGrid { grid-template-columns: 1fr !important; }
+  #simSituationCol { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.07) !important; }
+  #simSituationCol, #simResultsCol, #simChartWrap { padding: 24px 20px !important; }
+  #simCtaFooter { padding: 20px !important; flex-direction: column !important; align-items: stretch !important; text-align: center !important; }
+  #simCtaFooter a { justify-content: center !important; width: 100%; }
+
+  input[type=range] { height: 32px; }
+  input[type=range]::-webkit-slider-thumb { width: 24px; height: 24px; }
+  input[type=range]::-moz-range-thumb { width: 24px; height: 24px; }
 }
 </style>
 </head>
@@ -286,7 +341,10 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
   <a class="nav-logo" href="#">
     <span class="nav-my">my</span><span class="nav-fin">finance</span><span class="nav-dot">.</span>
   </a>
-  <div class="nav-links">
+  <button class="nav-burger" id="navBurger" onclick="toggleMobileNav()" aria-label="Ouvrir le menu" aria-expanded="false">
+    <i class="ti ti-menu-2" id="navBurgerIcon"></i>
+  </button>
+  <div class="nav-links" id="navLinks">
     <a href="#solution">Solution</a>
     <a href="#dashboard">Dashboard</a>
     <a href="#cibles">Pour qui</a>
@@ -421,7 +479,7 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
         <div class="dash-logo-bar">
           <span class="dash-my">my</span><span class="dash-fin">finance</span><span class="dash-dot-logo">.</span>
         </div>
-        <span style="font-size:11px;color:rgba(248,247,244,0.3);margin-left:auto">app.myfinance.ch · tableau de bord</span>
+        <span class="dash-topbar-meta" style="font-size:11px;color:rgba(248,247,244,0.3);margin-left:auto">app.myfinance.ch · tableau de bord</span>
       </div>
       <div class="dash-inner">
         <div class="dash-sidebar">
@@ -526,8 +584,8 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
     <div class="fade-in" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);overflow:hidden;">
 
       <!-- INPUTS -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);">
-        <div style="padding:32px;border-right:1px solid rgba(255,255,255,0.07);">
+      <div id="simInputsGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div id="simSituationCol" style="padding:32px;border-right:1px solid rgba(255,255,255,0.07);">
           <div style="font-size:11px;font-weight:600;color:var(--sage);text-transform:uppercase;letter-spacing:.1em;margin-bottom:24px">Votre situation</div>
 
           <!-- Âge -->
@@ -591,7 +649,7 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
         </div>
 
         <!-- RÉSULTATS CHIFFRÉS -->
-        <div style="padding:32px;">
+        <div id="simResultsCol" style="padding:32px;">
           <div style="font-size:11px;font-weight:600;color:var(--sage);text-transform:uppercase;letter-spacing:.1em;margin-bottom:24px">Résultats à 65 ans</div>
 
           <div style="margin-bottom:20px">
@@ -630,7 +688,7 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
       </div>
 
       <!-- GRAPHIQUE -->
-      <div style="padding:32px;">
+      <div id="simChartWrap" style="padding:32px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
           <div style="font-size:13px;font-weight:500;color:rgba(248,247,244,0.6)">Évolution du capital dans le temps</div>
           <div style="display:flex;gap:16px">
@@ -655,7 +713,7 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
       </div>
 
       <!-- CTA FOOTER -->
-      <div style="padding:20px 32px;background:rgba(74,107,74,0.15);border-top:1px solid rgba(200,217,200,0.12);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div id="simCtaFooter" style="padding:20px 32px;background:rgba(74,107,74,0.15);border-top:1px solid rgba(200,217,200,0.12);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
         <div>
           <div style="font-size:14px;font-weight:600;color:#F8F7F4;margin-bottom:2px">Prêt à agir aujourd'hui ?</div>
           <div style="font-size:12px;color:rgba(248,247,244,0.4)">myfinance. vous accompagne pour mettre en place votre stratégie d'épargne.</div>
@@ -1127,6 +1185,28 @@ window.addEventListener('load', () => {
 // Resize chart
 window.addEventListener('resize', () => {
   if (document.getElementById('chartCanvas')) calcSim();
+});
+
+// Mobile nav toggle
+function toggleMobileNav() {
+  const links = document.getElementById('navLinks');
+  const icon = document.getElementById('navBurgerIcon');
+  const burger = document.getElementById('navBurger');
+  const isOpen = links.classList.toggle('open');
+  icon.classList.toggle('ti-menu-2', !isOpen);
+  icon.classList.toggle('ti-x', isOpen);
+  burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    const links = document.getElementById('navLinks');
+    if (links.classList.contains('open')) {
+      links.classList.remove('open');
+      document.getElementById('navBurgerIcon').classList.remove('ti-x');
+      document.getElementById('navBurgerIcon').classList.add('ti-menu-2');
+      document.getElementById('navBurger').setAttribute('aria-expanded', 'false');
+    }
+  });
 });
 
 // Nav scroll effect
