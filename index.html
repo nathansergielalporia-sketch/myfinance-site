@@ -300,7 +300,6 @@ section { padding: 80px 32px; }
   transition: opacity .22s ease, transform .22s ease;
 }
 .target-panel.swap-out { opacity: 0; transform: translateY(10px) scale(.98); }
-.target-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--sage); transition: background .3s ease; }
 .target-flag { font-size: 24px; margin-bottom: 14px; }
 .target-title { font-size: 17px; font-weight: 600; color: #F8F7F4; margin-bottom: 8px; }
 .target-text { font-size: 13px; color: rgba(248,247,244,0.6); line-height: 1.65; margin-bottom: 16px; }
@@ -656,7 +655,6 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 
     <div class="target-panel-wrap fade-in">
       <div class="target-panel" id="targetPanel">
-        <div class="target-accent" id="targetAccent"></div>
         <div class="target-flag" id="targetFlag">🇫🇷🇨🇭</div>
         <div class="target-title" id="targetTitle">Frontaliers franco-suisses</div>
         <p class="target-text" id="targetText">Vous résidez en France et travaillez en Suisse : impôt à la source genevois et 2e/3e pilier côté suisse, déclaration française avec taux effectif, quotient familial et formulaires 3916 & 2041-AS côté français. myfinance. centralise tout, des deux côtés de la frontière.</p>
@@ -1347,15 +1345,13 @@ const targetData = {
     flag: '🇫🇷🇨🇭',
     title: 'Frontaliers franco-suisses',
     text: "Vous résidez en France et travaillez en Suisse : impôt à la source genevois et 2e/3e pilier côté suisse, déclaration française avec taux effectif, quotient familial et formulaires 3916 & 2041-AS côté français. myfinance. centralise tout, des deux côtés de la frontière.",
-    pills: ['Impôt source CH', '2e & 3e pilier', 'Taux effectif FR', '3916 & 2041-AS'],
-    accent: 'var(--sage)'
+    pills: ['Impôt source CH', '2e & 3e pilier', 'Taux effectif FR', '3916 & 2041-AS']
   },
   resident: {
     flag: '🇨🇭',
     title: 'Résidents suisses',
     text: "Vous vivez et travaillez en Suisse. myfinance. optimise votre 2e et 3e pilier, vos placements et votre fiscalité — avec, si vous le souhaitez, un accompagnement pour investir en France (immobilier locatif, SCPI) et diversifier votre patrimoine.",
-    pills: ['2e pilier', '3a/3b', 'AVS', 'Immobilier locatif FR'],
-    accent: 'var(--blue)'
+    pills: ['2e pilier', '3a/3b', 'AVS', 'Immobilier locatif FR']
   }
 };
 
@@ -1375,7 +1371,6 @@ function setTargetProfile(key, btn) {
     document.getElementById('targetFlag').textContent = d.flag;
     document.getElementById('targetTitle').textContent = d.title;
     document.getElementById('targetText').textContent = d.text;
-    document.getElementById('targetAccent').style.background = d.accent;
     document.getElementById('targetPills').innerHTML =
       d.pills.map(p => `<span class="target-pill">${p}</span>`).join('');
     panel.classList.remove('swap-out');
