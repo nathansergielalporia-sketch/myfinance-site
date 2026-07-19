@@ -281,7 +281,7 @@ section { padding: 80px 32px; }
 /* ── TARGETS ── */
 .targets { background: var(--ecru); }
 .target-toggle {
-  display: inline-flex; gap: 4px; background: var(--surface); border: 1px solid var(--border);
+  display: flex; width: max-content; gap: 4px; background: var(--surface); border: 1px solid var(--border);
   border-radius: 999px; padding: 4px; margin: 40px auto 32px;
 }
 .target-toggle-btn {
@@ -292,17 +292,20 @@ section { padding: 80px 32px; }
 .target-toggle-btn.active { background: var(--sage-dk); color: #fff; }
 .target-panel-wrap { max-width: 640px; margin: 0 auto; }
 .target-panel {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  background: rgba(44,44,42,0.75);
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.09); border-radius: 24px;
   padding: 32px; position: relative; overflow: hidden; text-align: left;
+  box-shadow: 0 16px 40px rgba(44,44,42,0.12);
   transition: opacity .22s ease, transform .22s ease;
 }
 .target-panel.swap-out { opacity: 0; transform: translateY(10px) scale(.98); }
 .target-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--sage); transition: background .3s ease; }
 .target-flag { font-size: 24px; margin-bottom: 14px; }
-.target-title { font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-.target-text { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 16px; }
+.target-title { font-size: 17px; font-weight: 600; color: #F8F7F4; margin-bottom: 8px; }
+.target-text { font-size: 13px; color: rgba(248,247,244,0.6); line-height: 1.65; margin-bottom: 16px; }
 .target-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-.target-pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); color: var(--text2); }
+.target-pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); color: rgba(248,247,244,0.7); }
 
 /* ── PRICING ── */
 .pricing { background: var(--charcoal); }
