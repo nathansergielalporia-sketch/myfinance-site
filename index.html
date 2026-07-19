@@ -245,11 +245,11 @@ section { padding: 80px 32px; }
 /* ── DASHBOARD LIVE ── */
 .dashboard-section { background: var(--ecru); overflow: hidden; }
 .dash-preview {
-  margin-top: 52px; background: var(--surface);
+  margin-top: 52px; background: var(--charcoal);
   border: 1px solid var(--border); border-radius: var(--radius);
-  overflow: hidden; box-shadow: 0 24px 80px rgba(44,44,42,0.1);
+  overflow: hidden; box-shadow: 0 24px 80px rgba(44,44,42,0.18);
 }
-.dash-topbar { background: var(--charcoal); padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
+.dash-topbar { background: var(--charcoal); padding: 12px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .dash-dots { display: flex; gap: 6px; }
 .dash-dot { width: 10px; height: 10px; border-radius: 50%; }
 .dash-logo-bar { margin-left: 12px; display: flex; align-items: baseline; }
@@ -257,26 +257,68 @@ section { padding: 80px 32px; }
 .dash-fin { font-weight: 600; color: var(--sage); font-size: 14px; }
 .dash-dot-logo { font-weight: 700; color: var(--sage); font-size: 14px; }
 .dash-inner { display: grid; grid-template-columns: 200px 1fr; }
-.dash-sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 20px 0; }
-.dash-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 12px; color: var(--text2); }
-.dash-nav-item.active { background: var(--sage-lt); color: var(--sage-dk); font-weight: 500; }
+.dash-sidebar { background: var(--charcoal); border-right: 1px solid rgba(255,255,255,0.06); padding: 20px 0; }
+.dash-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 12px; color: rgba(248,247,244,0.45); border-radius: 8px; margin: 0 8px; }
+.dash-nav-item.active { background: rgba(200,217,200,0.12); color: var(--sage); font-weight: 500; }
 .dash-nav-item i { font-size: 15px; }
-.dash-nav-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .07em; padding: 12px 16px 4px; }
-.dash-content { padding: 20px; background: #F8F7F4; }
-.dash-nw { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 12px; }
-.dash-nw-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
-.dash-nw-val { font-size: 28px; font-weight: 300; letter-spacing: -1px; margin-bottom: 10px; }
+.dash-nav-label { font-size: 10px; color: rgba(248,247,244,0.25); text-transform: uppercase; letter-spacing: .07em; padding: 12px 16px 4px; }
+.dash-content { padding: 20px; background: #232322; }
+
+/* Patrimoine net + repartition */
+.dash-nw {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px;
+  padding: 18px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+.dash-nw-label { font-size: 10px; color: rgba(248,247,244,0.4); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+.dash-nw-val { font-size: 28px; font-weight: 300; letter-spacing: -1px; color: #F8F7F4; margin-bottom: 6px; }
 .dash-nw-val strong { font-weight: 600; }
-.dash-bar-track { height: 6px; background: #F2F0EC; border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
-.dash-bar-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, var(--sage) 0%, var(--sage-dk) 100%); width: 0%; transition: width 1.6s .4s cubic-bezier(.4,0,.2,1); }
-.dash-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-.dash-chip { font-size: 10px; color: var(--text2); display: flex; align-items: center; gap: 4px; }
-.dash-chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+.dash-nw-trend { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--sage); background: rgba(200,217,200,0.12); padding: 3px 9px; border-radius: 20px; }
+.dash-donut { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.dash-donut-ring {
+  width: 76px; height: 76px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: conic-gradient(var(--sage) 0deg 206deg, var(--blue) 206deg 293deg, var(--lavender) 293deg 360deg);
+}
+.dash-donut-hole {
+  width: 50px; height: 50px; border-radius: 50%; background: #232322;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600; color: #F8F7F4; text-align: center;
+}
+.dash-chips { display: flex; flex-direction: column; gap: 6px; }
+.dash-chip { font-size: 10.5px; color: rgba(248,247,244,0.55); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.dash-chip-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* Stat tiles */
 .dash-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
-.dash-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
-.dash-stat-lbl { font-size: 10px; color: var(--text2); margin-bottom: 4px; }
-.dash-stat-val { font-size: 16px; font-weight: 600; letter-spacing: -0.4px; }
-.dash-stat-trend { font-size: 10px; color: var(--sage-dk); margin-top: 3px; }
+.dash-stat {
+  border-radius: 14px; padding: 14px; position: relative; overflow: hidden;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+}
+.dash-stat-sage { background: var(--sage); border-color: var(--sage); }
+.dash-stat-sand { background: var(--sand); border-color: var(--sand); }
+.dash-stat-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: rgba(248,247,244,0.4); }
+.dash-stat-sage .dash-stat-lbl { color: var(--sage-dk); }
+.dash-stat-sand .dash-stat-lbl { color: var(--sand-dk); }
+.dash-stat-val { font-size: 17px; font-weight: 600; letter-spacing: -0.4px; color: #F8F7F4; }
+.dash-stat-sage .dash-stat-val, .dash-stat-sand .dash-stat-val { color: var(--charcoal); }
+.dash-stat-trend {
+  display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 500;
+  margin-top: 8px; padding: 2px 8px; border-radius: 20px;
+  background: rgba(255,255,255,0.08); color: rgba(248,247,244,0.6);
+}
+.dash-stat-sage .dash-stat-trend, .dash-stat-sand .dash-stat-trend { background: rgba(44,44,42,0.12); color: var(--charcoal); }
+.dash-sparkline { position: absolute; bottom: 0; left: 0; width: 100%; height: 30px; opacity: .8; }
+.dash-ring-gauge {
+  width: 64px; height: 64px; border-radius: 50%; margin: 2px auto 0;
+  display: flex; align-items: center; justify-content: center;
+  background: conic-gradient(var(--sage) 0deg 234deg, rgba(255,255,255,0.08) 234deg 360deg);
+}
+.dash-ring-hole {
+  width: 46px; height: 46px; border-radius: 50%; background: #232322;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--sage);
+}
+.dash-stat-ring { text-align: center; }
 
 /* ── TARGETS ── */
 .targets { background: var(--ecru); }
@@ -416,6 +458,8 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
   .dash-inner { grid-template-columns: 1fr; }
   .dash-sidebar { display: none; }
   .dash-topbar-meta { display: none; }
+  .dash-nw { flex-direction: column; align-items: flex-start; }
+  .dash-donut { align-self: stretch; justify-content: space-between; }
   .dash-stat-row { grid-template-columns: 1fr; gap: 8px; }
   .footer-top { grid-template-columns: 1fr; gap: 32px; }
 
@@ -607,32 +651,43 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
           <div class="dash-nav-item"><i class="ti ti-receipt-tax"></i>Fiscalité</div>
         </div>
         <div class="dash-content">
-          <div style="font-size:13px;color:var(--text2);margin-bottom:14px">Bonjour Nathan 👋 · 15 juin 2026</div>
+          <div style="font-size:13px;color:rgba(248,247,244,0.45);margin-bottom:14px">Bonjour Nathan 👋 · 15 juin 2026</div>
+
           <div class="dash-nw">
-            <div class="dash-nw-label">Patrimoine net</div>
-            <div class="dash-nw-val">CHF <strong>347 820</strong></div>
-            <div class="dash-bar-track"><div class="dash-bar-fill" id="dashBar"></div></div>
-            <div class="dash-chips">
-              <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--sage)"></div>Immobilier CHF 210k</div>
-              <div class="dash-chip" style="margin-left:10px"><div class="dash-chip-dot" style="background:var(--blue)"></div>Épargne CHF 89k</div>
-              <div class="dash-chip" style="margin-left:10px"><div class="dash-chip-dot" style="background:var(--lavender)"></div>Placements CHF 68k</div>
+            <div>
+              <div class="dash-nw-label">Patrimoine net</div>
+              <div class="dash-nw-val">CHF <strong>347 820</strong></div>
+              <div class="dash-nw-trend"><i class="ti ti-arrow-up-right" style="font-size:12px"></i>+CHF 12 400 cette année</div>
+            </div>
+            <div class="dash-donut">
+              <div class="dash-donut-ring"><div class="dash-donut-hole">367k</div></div>
+              <div class="dash-chips">
+                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--sage)"></div>Immobilier · CHF 210k</div>
+                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--blue)"></div>Épargne · CHF 89k</div>
+                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--lavender)"></div>Placements · CHF 68k</div>
+              </div>
             </div>
           </div>
+
           <div class="dash-stat-row">
-            <div class="dash-stat">
+            <div class="dash-stat dash-stat-sage">
               <div class="dash-stat-lbl">Épargne mensuelle</div>
               <div class="dash-stat-val">CHF 1 240</div>
               <div class="dash-stat-trend">↑ +8% ce mois</div>
+              <svg class="dash-sparkline" viewBox="0 0 120 32" preserveAspectRatio="none">
+                <path d="M0,26 L0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2 L120,32 L0,32 Z" fill="rgba(44,44,42,0.15)"/>
+                <path d="M0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2" fill="none" stroke="rgba(44,44,42,0.4)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
             </div>
-            <div class="dash-stat">
+            <div class="dash-stat dash-stat-ring">
               <div class="dash-stat-lbl">Rendement 2026</div>
-              <div class="dash-stat-val" style="color:var(--sage-dk)">+5,4%</div>
+              <div class="dash-ring-gauge"><div class="dash-ring-hole">+5,4%</div></div>
               <div class="dash-stat-trend">↑ YTD portefeuille</div>
             </div>
-            <div class="dash-stat">
+            <div class="dash-stat dash-stat-sand">
               <div class="dash-stat-lbl">Impôt IR estimé</div>
               <div class="dash-stat-val">€ 4 820</div>
-              <div class="dash-stat-trend" style="color:var(--sage-dk)">−€ 820 optimisé</div>
+              <div class="dash-stat-trend">−€ 820 optimisé</div>
             </div>
           </div>
         </div>
@@ -1028,19 +1083,11 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
-      // Trigger dashboard bar
-      if (entry.target.classList.contains('dash-preview')) {
-        setTimeout(() => {
-          const bar = document.getElementById('dashBar');
-          if (bar) bar.style.width = '73%';
-        }, 300);
-      }
     }
   });
 }, { threshold: 0.15 });
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-document.querySelectorAll('.dash-preview').forEach(el => observer.observe(el));
 
 // Hero init
 window.addEventListener('load', () => {
