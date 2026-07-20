@@ -171,8 +171,7 @@ nav {
     animation: none; opacity: 1;
   }
   .multiplier-box, .inaction-box, .value-flash { animation: none; }
-  .dash-view.active, .dash-view.dash-view-out, .dash-donut-pop { animation: none; opacity: 1; transform: none; }
-  .dash-breakdown-fill, .dash-bar-el, .dash-holding-fill { transition: none; }
+  .dash-module-zoom, .dash-donut-pop { animation: none; box-shadow: none; transform: none; opacity: 1; }
 }
 
 /* ── INFO POPOVER ── */
@@ -327,42 +326,17 @@ section { padding: 80px 32px; }
 }
 .dash-stat-ring { text-align: center; }
 
-/* Auto-cycling demo views — iOS-style zoom in/out, the outer dashboard frame never resizes */
-.dash-view { display: none; transform-origin: center center; }
-.dash-view.active { display: block; animation: dash-zoom-in .5s cubic-bezier(.32,.72,0,1) forwards; }
-.dash-view.dash-view-out { animation: dash-zoom-out .32s cubic-bezier(.4,0,1,1) forwards; }
-@keyframes dash-zoom-in { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
-@keyframes dash-zoom-out { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.05); } }
-.dash-detail-title { font-size: 15px; font-weight: 600; color: #F8F7F4; margin-bottom: 18px; }
-.dash-donut-pop { animation: dash-pop .5s cubic-bezier(.16,1,.3,1); }
-@keyframes dash-pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
-
-/* Patrimoine view */
-.dash-breakdown-row { display: flex; align-items: center; gap: 32px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 22px; }
-.dash-donut-lg { width: 110px; height: 110px; flex-shrink: 0; }
-.dash-donut-lg .dash-donut-hole { width: 74px; height: 74px; font-size: 13px; }
-.dash-breakdown-list { flex: 1; display: flex; flex-direction: column; gap: 14px; }
-.dash-breakdown-lbl { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(248,247,244,0.6); margin-bottom: 6px; }
-.dash-breakdown-track { height: 6px; background: rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; margin-bottom: 4px; }
-.dash-breakdown-fill { height: 100%; border-radius: 10px; width: 0; transition: width 1.1s cubic-bezier(.4,0,.2,1); }
-.dash-breakdown-val { font-size: 11px; color: rgba(248,247,244,0.4); }
-
-/* Épargne view */
-.dash-bars-row { display: flex; align-items: flex-end; gap: 14px; height: 120px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 18px 22px 12px; }
-.dash-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 8px; }
-.dash-bar-el { width: 100%; max-width: 26px; height: 0; border-radius: 5px 5px 0 0; background: var(--sage); transition: height 1s cubic-bezier(.4,0,.2,1); }
-.dash-bar-col:last-child .dash-bar-el { background: var(--sage-dk); }
-.dash-bar-lbl { font-size: 10px; color: rgba(248,247,244,0.35); }
-.dash-detail-foot { margin-top: 14px; font-size: 12px; color: rgba(248,247,244,0.5); }
-
-/* Placements view */
-.dash-perf-chart { width: 100%; height: 100px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; margin-bottom: 14px; }
-.dash-holdings { display: flex; flex-direction: column; gap: 10px; }
-.dash-holding-row { display: flex; align-items: center; gap: 12px; font-size: 12px; color: rgba(248,247,244,0.6); }
-.dash-holding-name { width: 90px; flex-shrink: 0; color: #F8F7F4; font-weight: 500; }
-.dash-holding-track { flex: 1; height: 6px; background: rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; }
-.dash-holding-fill { height: 100%; border-radius: 10px; width: 0; background: var(--blue); transition: width 1.1s cubic-bezier(.4,0,.2,1); }
-.dash-holding-val { width: 90px; flex-shrink: 0; text-align: right; color: rgba(248,247,244,0.45); }
+/* Live demo: a "spotlight" zoom sweeps across the dashboard's own modules —
+   the screen always stays on the main dashboard, only its widgets pulse. */
+.dash-nw, .dash-stat { transform-origin: center center; }
+.dash-module-zoom { animation: dash-module-zoom 1.3s cubic-bezier(.34,1.56,.64,1); z-index: 3; }
+@keyframes dash-module-zoom {
+  0% { transform: scale(1); box-shadow: none; }
+  35% { transform: scale(1.045); box-shadow: 0 18px 44px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,217,200,0.3); }
+  100% { transform: scale(1); box-shadow: none; }
+}
+.dash-donut-pop { animation: dash-pop .6s cubic-bezier(.34,1.56,.64,1); }
+@keyframes dash-pop { 0% { opacity: .4; transform: scale(.8) rotate(-8deg); } 100% { opacity: 1; transform: scale(1) rotate(0); } }
 
 /* ── TARGETS ── */
 .targets { background: var(--ecru); }
@@ -505,8 +479,6 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
   .dash-nw { flex-direction: column; align-items: flex-start; }
   .dash-donut { align-self: stretch; justify-content: space-between; }
   .dash-stat-row { grid-template-columns: 1fr; gap: 8px; }
-  .dash-breakdown-row { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .dash-holding-name, .dash-holding-val { width: 70px; font-size: 11px; }
   .footer-top { grid-template-columns: 1fr; gap: 32px; }
 
   /* Readable body text (>=16px) */
@@ -687,125 +659,57 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
         <span class="dash-topbar-meta" style="font-size:11px;color:rgba(248,247,244,0.3);margin-left:auto">app.myfinance.ch · tableau de bord</span>
       </div>
       <div class="dash-inner">
-        <div class="dash-sidebar" id="dashSidebar">
+        <div class="dash-sidebar">
           <div class="dash-nav-label">Vue d'ensemble</div>
-          <div class="dash-nav-item active" data-view="overview"><i class="ti ti-layout-dashboard"></i>Tableau de bord</div>
-          <div class="dash-nav-item" data-view="patrimoine"><i class="ti ti-chart-pie"></i>Patrimoine</div>
+          <div class="dash-nav-item active"><i class="ti ti-layout-dashboard"></i>Tableau de bord</div>
+          <div class="dash-nav-item"><i class="ti ti-chart-pie"></i>Patrimoine</div>
           <div class="dash-nav-label">Finances</div>
-          <div class="dash-nav-item" data-view="epargne"><i class="ti ti-piggy-bank"></i>Épargne</div>
-          <div class="dash-nav-item" data-view="placements"><i class="ti ti-trending-up"></i>Placements</div>
+          <div class="dash-nav-item"><i class="ti ti-piggy-bank"></i>Épargne</div>
+          <div class="dash-nav-item"><i class="ti ti-trending-up"></i>Placements</div>
           <div class="dash-nav-item"><i class="ti ti-wallet"></i>Budget</div>
           <div class="dash-nav-label">Documents</div>
           <div class="dash-nav-item"><i class="ti ti-file-text"></i>Contrats</div>
           <div class="dash-nav-item"><i class="ti ti-calculator"></i>Simulateurs</div>
           <div class="dash-nav-item"><i class="ti ti-receipt-tax"></i>Fiscalité</div>
         </div>
-        <div class="dash-content" id="dashContent">
+        <div class="dash-content">
           <div style="font-size:13px;color:rgba(248,247,244,0.45);margin-bottom:14px">Bonjour Nathan 👋 · 15 juin 2026</div>
 
-          <!-- Vue : Tableau de bord -->
-          <div class="dash-view active" id="dashView-overview">
-            <div class="dash-nw">
-              <div>
-                <div class="dash-nw-label">Patrimoine net</div>
-                <div class="dash-nw-val">CHF <strong id="dashPatrimoineVal">0</strong></div>
-                <div class="dash-nw-trend"><i class="ti ti-arrow-up-right" style="font-size:12px"></i>+CHF 12 400 cette année</div>
-              </div>
-              <div class="dash-donut">
-                <div class="dash-donut-ring dash-donut-pop"><div class="dash-donut-hole">367k</div></div>
-                <div class="dash-chips">
-                  <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--sage)"></div>Immobilier · CHF 210k</div>
-                  <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--blue)"></div>Épargne · CHF 89k</div>
-                  <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--lavender)"></div>Placements · CHF 68k</div>
-                </div>
-              </div>
+          <div class="dash-nw" id="dashModNw">
+            <div>
+              <div class="dash-nw-label">Patrimoine net</div>
+              <div class="dash-nw-val">CHF <strong id="dashPatrimoineVal">0</strong></div>
+              <div class="dash-nw-trend"><i class="ti ti-arrow-up-right" style="font-size:12px"></i>+CHF 12 400 cette année</div>
             </div>
-
-            <div class="dash-stat-row">
-              <div class="dash-stat dash-stat-sage">
-                <div class="dash-stat-lbl">Épargne mensuelle</div>
-                <div class="dash-stat-val">CHF <span id="dashEpargneVal">0</span></div>
-                <div class="dash-stat-trend">↑ +8% ce mois</div>
-                <svg class="dash-sparkline" viewBox="0 0 120 32" preserveAspectRatio="none">
-                  <path d="M0,26 L0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2 L120,32 L0,32 Z" fill="rgba(44,44,42,0.15)"/>
-                  <path d="M0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2" fill="none" stroke="rgba(44,44,42,0.4)" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="dash-stat dash-stat-ring">
-                <div class="dash-stat-lbl">Rendement 2026</div>
-                <div class="dash-ring-gauge dash-donut-pop"><div class="dash-ring-hole">+5,4%</div></div>
-                <div class="dash-stat-trend">↑ YTD portefeuille</div>
-              </div>
-              <div class="dash-stat dash-stat-sand">
-                <div class="dash-stat-lbl">Impôt IR estimé</div>
-                <div class="dash-stat-val">€ <span id="dashImpotVal">0</span></div>
-                <div class="dash-stat-trend">−€ 820 optimisé</div>
+            <div class="dash-donut">
+              <div class="dash-donut-ring" id="dashModRing"><div class="dash-donut-hole">367k</div></div>
+              <div class="dash-chips">
+                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--sage)"></div>Immobilier · CHF 210k</div>
+                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--blue)"></div>Épargne · CHF 89k</div>
+                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--lavender)"></div>Placements · CHF 68k</div>
               </div>
             </div>
           </div>
 
-          <!-- Vue : Patrimoine -->
-          <div class="dash-view" id="dashView-patrimoine">
-            <div class="dash-detail-title">Répartition du patrimoine</div>
-            <div class="dash-breakdown-row">
-              <div class="dash-donut-ring dash-donut-lg dash-donut-pop"><div class="dash-donut-hole">CHF 367k</div></div>
-              <div class="dash-breakdown-list">
-                <div>
-                  <div class="dash-breakdown-lbl"><span class="dash-chip-dot" style="background:var(--sage)"></span>Immobilier</div>
-                  <div class="dash-breakdown-track"><div class="dash-breakdown-fill" style="background:var(--sage)" data-target="57%"></div></div>
-                  <div class="dash-breakdown-val">CHF 210k · 57%</div>
-                </div>
-                <div>
-                  <div class="dash-breakdown-lbl"><span class="dash-chip-dot" style="background:var(--blue)"></span>Épargne</div>
-                  <div class="dash-breakdown-track"><div class="dash-breakdown-fill" style="background:var(--blue)" data-target="24%"></div></div>
-                  <div class="dash-breakdown-val">CHF 89k · 24%</div>
-                </div>
-                <div>
-                  <div class="dash-breakdown-lbl"><span class="dash-chip-dot" style="background:var(--lavender)"></span>Placements</div>
-                  <div class="dash-breakdown-track"><div class="dash-breakdown-fill" style="background:var(--lavender)" data-target="19%"></div></div>
-                  <div class="dash-breakdown-val">CHF 68k · 19%</div>
-                </div>
-              </div>
+          <div class="dash-stat-row">
+            <div class="dash-stat dash-stat-sage" id="dashModEpargne">
+              <div class="dash-stat-lbl">Épargne mensuelle</div>
+              <div class="dash-stat-val">CHF <span id="dashEpargneVal">0</span></div>
+              <div class="dash-stat-trend">↑ +8% ce mois</div>
+              <svg class="dash-sparkline" viewBox="0 0 120 32" preserveAspectRatio="none">
+                <path d="M0,26 L0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2 L120,32 L0,32 Z" fill="rgba(44,44,42,0.15)"/>
+                <path d="M0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2" fill="none" stroke="rgba(44,44,42,0.4)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
             </div>
-          </div>
-
-          <!-- Vue : Épargne -->
-          <div class="dash-view" id="dashView-epargne">
-            <div class="dash-detail-title">Épargne des 6 derniers mois</div>
-            <div class="dash-bars-row">
-              <div class="dash-bar-col"><div class="dash-bar-el" data-target="63%"></div><div class="dash-bar-lbl">Jan</div></div>
-              <div class="dash-bar-col"><div class="dash-bar-el" data-target="69%"></div><div class="dash-bar-lbl">Fév</div></div>
-              <div class="dash-bar-col"><div class="dash-bar-el" data-target="75%"></div><div class="dash-bar-lbl">Mar</div></div>
-              <div class="dash-bar-col"><div class="dash-bar-el" data-target="81%"></div><div class="dash-bar-lbl">Avr</div></div>
-              <div class="dash-bar-col"><div class="dash-bar-el" data-target="88%"></div><div class="dash-bar-lbl">Mai</div></div>
-              <div class="dash-bar-col"><div class="dash-bar-el" data-target="95%"></div><div class="dash-bar-lbl">Juin</div></div>
+            <div class="dash-stat dash-stat-ring" id="dashModRendement">
+              <div class="dash-stat-lbl">Rendement 2026</div>
+              <div class="dash-ring-gauge" id="dashModGauge"><div class="dash-ring-hole">+5,4%</div></div>
+              <div class="dash-stat-trend">↑ YTD portefeuille</div>
             </div>
-            <div class="dash-detail-foot">Moyenne : CHF 1 240/mois · <span style="color:var(--sage)">↑ +8% ce mois</span></div>
-          </div>
-
-          <!-- Vue : Placements -->
-          <div class="dash-view" id="dashView-placements">
-            <div class="dash-detail-title">Performance du portefeuille</div>
-            <svg class="dash-perf-chart" viewBox="0 0 300 100" preserveAspectRatio="none">
-              <path d="M0,85 L0,80 C20,82 35,75 50,70 C65,65 80,68 95,58 C110,48 120,52 135,45 C150,38 160,42 175,32 C190,22 205,28 220,20 C235,12 250,16 265,10 L280,8 L300,5 L300,100 L0,100 Z" fill="rgba(200,217,200,0.1)"/>
-              <path class="dash-perf-line" d="M0,80 C20,82 35,75 50,70 C65,65 80,68 95,58 C110,48 120,52 135,45 C150,38 160,42 175,32 C190,22 205,28 220,20 C235,12 250,16 265,10 L280,8 L300,5" fill="none" stroke="var(--sage)" stroke-width="2.5" stroke-linecap="round"/>
-            </svg>
-            <div class="dash-holdings">
-              <div class="dash-holding-row">
-                <div class="dash-holding-name">ETF Monde</div>
-                <div class="dash-holding-track"><div class="dash-holding-fill" style="background:var(--sage)" data-target="56%"></div></div>
-                <div class="dash-holding-val">CHF 38k · 56%</div>
-              </div>
-              <div class="dash-holding-row">
-                <div class="dash-holding-name">3e pilier</div>
-                <div class="dash-holding-track"><div class="dash-holding-fill" style="background:var(--blue)" data-target="29%"></div></div>
-                <div class="dash-holding-val">CHF 20k · 29%</div>
-              </div>
-              <div class="dash-holding-row">
-                <div class="dash-holding-name">Obligations</div>
-                <div class="dash-holding-track"><div class="dash-holding-fill" style="background:var(--lavender)" data-target="15%"></div></div>
-                <div class="dash-holding-val">CHF 10k · 15%</div>
-              </div>
+            <div class="dash-stat dash-stat-sand" id="dashModImpot">
+              <div class="dash-stat-lbl">Impôt IR estimé</div>
+              <div class="dash-stat-val">€ <span id="dashImpotVal">0</span></div>
+              <div class="dash-stat-trend">−€ 820 optimisé</div>
             </div>
           </div>
         </div>
@@ -1262,19 +1166,13 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 // ── DASHBOARD LIVE DEMO ──
-// "Tableau de bord" stays the home view: the demo briefly visits one other tab
-// at a time, then always returns to it, rather than cycling all tabs equally.
-// Purely decorative (not clickable) — meant to make visitors want their own dashboard.
-const dashSequence = [
-  { view: 'overview', duration: 5200 },
-  { view: 'patrimoine', duration: 3400 },
-  { view: 'overview', duration: 5200 },
-  { view: 'epargne', duration: 3400 },
-  { view: 'overview', duration: 5200 },
-  { view: 'placements', duration: 3400 },
-];
-let dashStepIndex = 0;
-let dashStepTimer = null;
+// The screen always stays on the main dashboard — a "spotlight" zoom sweeps
+// across its own modules in turn (patrimoine, épargne, rendement, impôt),
+// each one popping up like an iOS icon, re-playing its own animation as it
+// gets the spotlight. Purely decorative (not clickable).
+const dashModules = ['dashModNw', 'dashModEpargne', 'dashModRendement', 'dashModImpot'];
+let dashModIndex = 0;
+let dashModTimer = null;
 let dashStarted = false;
 const dashReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1291,95 +1189,48 @@ function animateDashNumber(el, target, duration = 900) {
   requestAnimationFrame(step);
 }
 
-function animateDashFills(root) {
-  root.querySelectorAll('[data-target]').forEach(el => {
-    const prop = el.classList.contains('dash-bar-el') ? 'height' : 'width';
-    if (dashReduceMotion) { el.style[prop] = el.dataset.target; return; }
-    el.style[prop] = '0';
+function pop(el) {
+  if (!el || dashReduceMotion) return;
+  el.classList.remove('dash-donut-pop');
+  void el.offsetWidth;
+  el.classList.add('dash-donut-pop');
+}
+
+function zoomDashModule(key) {
+  const el = document.getElementById(key);
+  if (!el) return;
+  if (!dashReduceMotion) {
+    el.classList.remove('dash-module-zoom');
     void el.offsetWidth;
-    requestAnimationFrame(() => { el.style[prop] = el.dataset.target; });
-  });
-}
-
-function drawDashPerfLine(root) {
-  const path = root.querySelector('.dash-perf-line');
-  if (!path) return;
-  const len = path.getTotalLength();
-  if (dashReduceMotion) { path.style.strokeDashoffset = 0; return; }
-  path.style.transition = 'none';
-  path.style.strokeDasharray = len;
-  path.style.strokeDashoffset = len;
-  path.getBoundingClientRect();
-  path.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)';
-  requestAnimationFrame(() => { path.style.strokeDashoffset = 0; });
-}
-
-function playDashView(key) {
-  const view = document.getElementById('dashView-' + key);
-  if (!view) return;
-  if (key === 'overview') {
+    el.classList.add('dash-module-zoom');
+  }
+  if (key === 'dashModNw') {
     animateDashNumber(document.getElementById('dashPatrimoineVal'), 347820);
-    animateDashNumber(document.getElementById('dashEpargneVal'), 1240);
-    animateDashNumber(document.getElementById('dashImpotVal'), 4820);
-  } else if (key === 'placements') {
-    animateDashFills(view);
-    drawDashPerfLine(view);
-  } else {
-    animateDashFills(view);
+    pop(document.getElementById('dashModRing'));
+  } else if (key === 'dashModEpargne') {
+    animateDashNumber(document.getElementById('dashEpargneVal'), 1240, 700);
+  } else if (key === 'dashModRendement') {
+    pop(document.getElementById('dashModGauge'));
+  } else if (key === 'dashModImpot') {
+    animateDashNumber(document.getElementById('dashImpotVal'), 4820, 700);
   }
-}
-
-function showDashView(key) {
-  const current = document.querySelector('#dashContent .dash-view.active');
-  const next = document.getElementById('dashView-' + key);
-  if (!next || current === next) return;
-  document.querySelectorAll('#dashSidebar .dash-nav-item[data-view]').forEach(item => {
-    item.classList.toggle('active', item.dataset.view === key);
-  });
-  const swap = () => {
-    document.querySelectorAll('#dashContent .dash-view').forEach(v => v.classList.remove('active', 'dash-view-out'));
-    next.classList.add('active');
-    playDashView(key);
-  };
-  if (current && !dashReduceMotion) {
-    current.classList.add('dash-view-out');
-    setTimeout(swap, 300);
-  } else {
-    swap();
-  }
-}
-
-function resetDashToOverview() {
-  document.querySelectorAll('#dashContent .dash-view').forEach(v => v.classList.remove('active', 'dash-view-out'));
-  const overview = document.getElementById('dashView-overview');
-  if (overview) overview.classList.add('active');
-  document.querySelectorAll('#dashSidebar .dash-nav-item[data-view]').forEach(item => {
-    item.classList.toggle('active', item.dataset.view === 'overview');
-  });
-  playDashView('overview');
-}
-
-function scheduleDashStep() {
-  const currentDuration = dashSequence[dashStepIndex].duration;
-  dashStepTimer = setTimeout(() => {
-    dashStepIndex = (dashStepIndex + 1) % dashSequence.length;
-    showDashView(dashSequence[dashStepIndex].view);
-    scheduleDashStep();
-  }, currentDuration);
 }
 
 function startDashDemo() {
   if (dashStarted) return;
   dashStarted = true;
-  dashStepIndex = 0;
-  resetDashToOverview();
-  scheduleDashStep();
+  dashModIndex = 0;
+  zoomDashModule(dashModules[0]);
+  dashModTimer = setInterval(() => {
+    dashModIndex = (dashModIndex + 1) % dashModules.length;
+    zoomDashModule(dashModules[dashModIndex]);
+  }, 2000);
 }
 
 function stopDashDemo() {
   dashStarted = false;
-  clearTimeout(dashStepTimer);
-  dashStepTimer = null;
+  clearInterval(dashModTimer);
+  dashModTimer = null;
 }
 
 const dashPreviewEl = document.querySelector('.dash-preview');
