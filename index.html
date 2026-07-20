@@ -125,11 +125,6 @@ nav {
   position: relative; overflow: hidden;
 }
 .hero-card-chart { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
-.hero-card-chart .hc-line { animation: hc-line-pulse 3.4s ease-in-out infinite; }
-@keyframes hc-line-pulse {
-  0%, 100% { opacity: .45; }
-  50% { opacity: .9; }
-}
 .hero-card-label { font-size: 11px; font-weight: 500; color: var(--sand-dk); text-transform: uppercase; letter-spacing: .1em; position: relative; z-index: 1; }
 .hero-counter { font-size: 48px; font-weight: 300; color: var(--charcoal); letter-spacing: -2px; font-variant-numeric: tabular-nums; position: relative; z-index: 1; }
 .hero-counter strong { font-weight: 600; }
@@ -172,7 +167,6 @@ nav {
     animation: none; opacity: 1;
   }
   .multiplier-box, .inaction-box, .value-flash { animation: none; }
-  .hero-card-chart .hc-line { animation: none; opacity: .7; }
 }
 
 /* ── INFO POPOVER ── */
@@ -525,9 +519,9 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
   <p class="hero-sub">Deux pays, deux fiscalités — tout ce que vous possédez, visible et optimisé depuis un seul endroit. Découvrez comment reprendre le contrôle avec myfinance.</p>
 
   <div class="hero-card">
-    <svg class="hero-card-chart" viewBox="0 0 300 120" preserveAspectRatio="none">
-      <path d="M0,100 C30,95 40,90 60,85 C90,78 100,80 130,68 C160,58 170,62 200,48 C230,36 240,40 270,25 C285,18 295,20 300,10 L300,120 L0,120 Z" fill="rgba(122,99,72,0.1)"/>
-      <path class="hc-line" d="M0,100 C30,95 40,90 60,85 C90,78 100,80 130,68 C160,58 170,62 200,48 C230,36 240,40 270,25 C285,18 295,20 300,10" fill="none" stroke="rgba(122,99,72,0.55)" stroke-width="2" stroke-linecap="round"/>
+    <svg class="hero-card-chart" id="heroCardChart" viewBox="0 0 300 120" preserveAspectRatio="none">
+      <path class="hc-area" fill="rgba(122,99,72,0.12)"/>
+      <path class="hc-line" fill="none" stroke="rgba(122,99,72,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <div class="hero-card-label">Patrimoine net · exemple client</div>
     <div class="hero-counter">CHF <strong id="counterVal">0</strong></div>
@@ -1073,10 +1067,54 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
 </footer>
 
 <script>
+// Jagged "stock chart" style trace behind the hero counter, drawn in sync with it
+function initHeroChart() {
+  const svg = document.getElementById('heroCardChart');
+  const areaPath = svg.querySelector('.hc-area');
+  const linePath = svg.querySelector('.hc-line');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Overall-rising, jagged values (0-1) with a couple of pull-backs, like a real index chart
+  const vals = [0.06,0.09,0.07,0.11,0.09,0.14,0.12,0.17,0.15,0.20,
+    0.27,0.24,0.30,0.26,0.18,0.22,0.32,0.29,0.37,0.47,
+    0.43,0.51,0.58,0.54,0.62,0.70,0.66,0.74,0.82,0.78,
+    0.86,0.92,0.89,0.96,1.0];
+  const w = 300, h = 120, padTop = 10, padBottom = 10;
+  const n = vals.length;
+  const points = vals.map((v, i) => [
+    (i / (n - 1)) * w,
+    h - padBottom - v * (h - padTop - padBottom)
+  ]);
+  const lineD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const areaD = lineD + ` L${w},${h} L0,${h} Z`;
+
+  linePath.setAttribute('d', lineD);
+  areaPath.setAttribute('d', areaD);
+
+  const len = linePath.getTotalLength();
+  linePath.style.strokeDasharray = len;
+
+  if (reduceMotion) {
+    linePath.style.strokeDashoffset = 0;
+    areaPath.style.clipPath = 'inset(0 0 0 0)';
+    return { update() {} };
+  }
+
+  linePath.style.strokeDashoffset = len;
+  areaPath.style.clipPath = 'inset(0 100% 0 0)';
+
+  return {
+    update(eased) {
+      linePath.style.strokeDashoffset = len * (1 - eased);
+      areaPath.style.clipPath = `inset(0 ${(1 - eased) * 100}% 0 0)`;
+    }
+  };
+}
+
 // Counter animation
 function animateCounter(target, duration) {
   const el = document.getElementById('counterVal');
-  const start = 0;
+  const chart = initHeroChart();
   const startTime = performance.now();
   function update(now) {
     const elapsed = now - startTime;
@@ -1084,6 +1122,7 @@ function animateCounter(target, duration) {
     const eased = 1 - Math.pow(1 - progress, 3);
     const current = Math.floor(eased * target);
     el.textContent = current.toLocaleString('fr-CH');
+    chart.update(eased);
     if (progress < 1) requestAnimationFrame(update);
   }
   requestAnimationFrame(update);
