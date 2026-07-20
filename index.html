@@ -171,7 +171,10 @@ nav {
     animation: none; opacity: 1;
   }
   .multiplier-box, .inaction-box, .value-flash { animation: none; }
-  .dash-module-zoom, .dash-donut-pop { animation: none; box-shadow: none; transform: none; opacity: 1; }
+  .dash-module, .dash-module-active { transition: none; transform: none; box-shadow: none; filter: none; opacity: 1; }
+  .dash-module-compact, .dash-module-detail, .dm-bar-fill { transition: none; }
+  .dash-module-detail { opacity: 0; }
+  .dash-donut-pop { animation: none; box-shadow: none; transform: none; opacity: 1; }
 }
 
 /* ── INFO POPOVER ── */
@@ -268,7 +271,7 @@ section { padding: 80px 32px; }
 .dash-nav-item.active { background: rgba(200,217,200,0.12); color: var(--sage); font-weight: 500; }
 .dash-nav-item i { font-size: 15px; }
 .dash-nav-label { font-size: 10px; color: rgba(248,247,244,0.25); text-transform: uppercase; letter-spacing: .07em; padding: 12px 16px 4px; }
-.dash-content { padding: 20px; background: #232322; }
+.dash-content { padding: 20px; background: #232322; position: relative; overflow: hidden; }
 
 /* Patrimoine net + repartition */
 .dash-nw {
@@ -326,15 +329,40 @@ section { padding: 80px 32px; }
 }
 .dash-stat-ring { text-align: center; }
 
-/* Live demo: a "spotlight" zoom sweeps across the dashboard's own modules —
-   the screen always stays on the main dashboard, only its widgets pulse. */
-.dash-nw, .dash-stat { transform-origin: center center; }
-.dash-module-zoom { animation: dash-module-zoom 1.3s cubic-bezier(.34,1.56,.64,1); z-index: 3; }
-@keyframes dash-module-zoom {
-  0% { transform: scale(1); box-shadow: none; }
-  35% { transform: scale(1.045); box-shadow: 0 18px 44px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,217,200,0.3); }
-  100% { transform: scale(1); box-shadow: none; }
+/* Live demo: the screen always stays on the main dashboard. Every few seconds,
+   one module smoothly grows to fill the entire content pane (sidebar excluded)
+   and "decomposes" — its compact tile cross-fades into a richer detail view —
+   then shrinks back into place. Purely decorative (not clickable). */
+.dash-module { position: relative; transition: opacity .45s ease, transform .45s ease, filter .45s ease; }
+.dash-content.dash-focus-active .dash-module:not(.dash-module-active) {
+  opacity: .22; transform: scale(.95); filter: blur(1.5px);
 }
+.dash-module-active {
+  z-index: 30; overflow: visible !important; transform-origin: 0 0;
+  transition: transform .7s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,217,200,0.25);
+}
+.dash-module-compact, .dash-module-detail { transition: opacity .3s ease; }
+.dash-nw-compact { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; min-height: 205px; }
+.dash-stat .dash-module-compact { min-height: 205px; display: flex; flex-direction: column; }
+.dash-stat-ring .dash-module-compact { justify-content: center; }
+.dash-module-detail {
+  position: absolute; inset: 0; opacity: 0; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.dm-rows { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.dm-row-top { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: rgba(248,247,244,0.6); margin-bottom: 3px; gap: 10px; }
+.dm-row-top span { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.dm-row-top b { color: #F8F7F4; font-weight: 600; white-space: nowrap; }
+.dm-bar { height: 5px; border-radius: 10px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.dm-bar-fill { height: 100%; width: 0%; border-radius: 10px; transition: width 1s cubic-bezier(.16,1,.3,1); }
+.dm-bar-fill.filled { width: var(--w); }
+.dm-row-flat { display: flex; align-items: center; justify-content: space-between; font-size: 12px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: rgba(248,247,244,0.6); }
+.dm-row-flat:last-child { border-bottom: none; }
+.dm-row-flat b { color: #F8F7F4; font-weight: 600; }
+.dm-dark-text .dm-row-top, .dm-dark-text .dm-row-flat { color: rgba(44,44,42,0.62); border-color: rgba(44,44,42,0.1); }
+.dm-dark-text .dm-row-top b, .dm-dark-text .dm-row-flat b { color: var(--charcoal); }
+.dm-dark-text .dm-bar { background: rgba(44,44,42,0.12); }
 .dash-donut-pop { animation: dash-pop .6s cubic-bezier(.34,1.56,.64,1); }
 @keyframes dash-pop { 0% { opacity: .4; transform: scale(.8) rotate(-8deg); } 100% { opacity: 1; transform: scale(1) rotate(0); } }
 
@@ -476,7 +504,7 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
   .dash-inner { grid-template-columns: 1fr; }
   .dash-sidebar { display: none; }
   .dash-topbar-meta { display: none; }
-  .dash-nw { flex-direction: column; align-items: flex-start; }
+  .dash-nw-compact { flex-direction: column; align-items: flex-start; }
   .dash-donut { align-self: stretch; justify-content: space-between; }
   .dash-stat-row { grid-template-columns: 1fr; gap: 8px; }
   .footer-top { grid-template-columns: 1fr; gap: 32px; }
@@ -675,41 +703,109 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
         <div class="dash-content">
           <div style="font-size:13px;color:rgba(248,247,244,0.45);margin-bottom:14px">Bonjour Nathan 👋 · 15 juin 2026</div>
 
-          <div class="dash-nw" id="dashModNw">
-            <div>
-              <div class="dash-nw-label">Patrimoine net</div>
-              <div class="dash-nw-val">CHF <strong id="dashPatrimoineVal">0</strong></div>
-              <div class="dash-nw-trend"><i class="ti ti-arrow-up-right" style="font-size:12px"></i>+CHF 12 400 cette année</div>
+          <div class="dash-nw dash-module" id="dashModNw">
+            <div class="dash-module-compact dash-nw-compact">
+              <div>
+                <div class="dash-nw-label">Patrimoine net</div>
+                <div class="dash-nw-val">CHF <strong id="dashPatrimoineVal">0</strong></div>
+                <div class="dash-nw-trend"><i class="ti ti-arrow-up-right" style="font-size:12px"></i>+CHF 12 400 cette année</div>
+              </div>
+              <div class="dash-donut">
+                <div class="dash-donut-ring" id="dashModRing"><div class="dash-donut-hole">367k</div></div>
+                <div class="dash-chips">
+                  <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--sage)"></div>Immobilier · CHF 210k</div>
+                  <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--blue)"></div>Épargne · CHF 89k</div>
+                  <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--lavender)"></div>Placements · CHF 68k</div>
+                </div>
+              </div>
             </div>
-            <div class="dash-donut">
-              <div class="dash-donut-ring" id="dashModRing"><div class="dash-donut-hole">367k</div></div>
-              <div class="dash-chips">
-                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--sage)"></div>Immobilier · CHF 210k</div>
-                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--blue)"></div>Épargne · CHF 89k</div>
-                <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--lavender)"></div>Placements · CHF 68k</div>
+            <div class="dash-module-detail" id="dashDetailNw">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:6px">
+                <div>
+                  <div class="dash-nw-label">Patrimoine net</div>
+                  <div class="dash-nw-val" style="font-size:clamp(17px,2.1vw,22px)">CHF <strong>347 820</strong></div>
+                </div>
+                <div class="dash-donut-ring" id="dashDetailRing" style="width:48px;height:48px;flex-shrink:0"><div class="dash-donut-hole" style="width:32px;height:32px;font-size:8px">367k</div></div>
+              </div>
+              <div class="dm-rows">
+                <div class="dm-row">
+                  <div class="dm-row-top"><span><i class="ti ti-building-estate" style="color:var(--sage)"></i>Immobilier</span><b>CHF 210 000 · 57%</b></div>
+                  <div class="dm-bar"><div class="dm-bar-fill" style="background:var(--sage);--w:57%"></div></div>
+                </div>
+                <div class="dm-row">
+                  <div class="dm-row-top"><span><i class="ti ti-piggy-bank" style="color:var(--blue)"></i>Épargne</span><b>CHF 89 000 · 24%</b></div>
+                  <div class="dm-bar"><div class="dm-bar-fill" style="background:var(--blue);--w:24%"></div></div>
+                </div>
+                <div class="dm-row">
+                  <div class="dm-row-top"><span><i class="ti ti-trending-up" style="color:var(--lavender)"></i>Placements</span><b>CHF 68 000 · 19%</b></div>
+                  <div class="dm-bar"><div class="dm-bar-fill" style="background:var(--lavender);--w:19%"></div></div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="dash-stat-row">
-            <div class="dash-stat dash-stat-sage" id="dashModEpargne">
-              <div class="dash-stat-lbl">Épargne mensuelle</div>
-              <div class="dash-stat-val">CHF <span id="dashEpargneVal">0</span></div>
-              <div class="dash-stat-trend">↑ +8% ce mois</div>
-              <svg class="dash-sparkline" viewBox="0 0 120 32" preserveAspectRatio="none">
-                <path d="M0,26 L0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2 L120,32 L0,32 Z" fill="rgba(44,44,42,0.15)"/>
-                <path d="M0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2" fill="none" stroke="rgba(44,44,42,0.4)" stroke-width="2" stroke-linecap="round"/>
-              </svg>
+            <div class="dash-stat dash-stat-sage dash-module" id="dashModEpargne">
+              <div class="dash-module-compact">
+                <div class="dash-stat-lbl">Épargne mensuelle</div>
+                <div class="dash-stat-val">CHF <span id="dashEpargneVal">0</span></div>
+                <div class="dash-stat-trend">↑ +8% ce mois</div>
+                <svg class="dash-sparkline" viewBox="0 0 120 32" preserveAspectRatio="none">
+                  <path d="M0,26 L0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2 L120,32 L0,32 Z" fill="rgba(44,44,42,0.15)"/>
+                  <path d="M0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2" fill="none" stroke="rgba(44,44,42,0.4)" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="dash-module-detail dm-dark-text" id="dashDetailEpargne">
+                <div class="dash-stat-lbl" style="color:var(--sage-dk)">Épargne mensuelle</div>
+                <div class="dash-stat-val" style="font-size:clamp(16px,2vw,20px);color:var(--charcoal)">CHF 1 240</div>
+                <div class="dash-stat-trend" style="margin-bottom:6px">↑ +8% ce mois</div>
+                <div class="dm-rows">
+                  <div class="dm-row">
+                    <div class="dm-row-top"><span>3e pilier</span><b>CHF 620 · 50%</b></div>
+                    <div class="dm-bar"><div class="dm-bar-fill" style="background:var(--charcoal);--w:50%"></div></div>
+                  </div>
+                  <div class="dm-row">
+                    <div class="dm-row-top"><span>Compte épargne</span><b>CHF 420 · 34%</b></div>
+                    <div class="dm-bar"><div class="dm-bar-fill" style="background:var(--charcoal);--w:34%"></div></div>
+                  </div>
+                  <div class="dm-row">
+                    <div class="dm-row-top"><span>Objectif logement</span><b>CHF 200 · 16%</b></div>
+                    <div class="dm-bar"><div class="dm-bar-fill" style="background:var(--charcoal);--w:16%"></div></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="dash-stat dash-stat-ring" id="dashModRendement">
-              <div class="dash-stat-lbl">Rendement 2026</div>
-              <div class="dash-ring-gauge" id="dashModGauge"><div class="dash-ring-hole">+5,4%</div></div>
-              <div class="dash-stat-trend">↑ YTD portefeuille</div>
+            <div class="dash-stat dash-stat-ring dash-module" id="dashModRendement">
+              <div class="dash-module-compact">
+                <div class="dash-stat-lbl">Rendement 2026</div>
+                <div class="dash-ring-gauge" id="dashModGauge"><div class="dash-ring-hole">+5,4%</div></div>
+                <div class="dash-stat-trend">↑ YTD portefeuille</div>
+              </div>
+              <div class="dash-module-detail" id="dashDetailRendement" style="align-items:center;text-align:center">
+                <div class="dash-stat-lbl">Rendement 2026</div>
+                <div class="dash-ring-gauge" id="dashDetailGauge" style="width:50px;height:50px;margin:2px auto 6px"><div class="dash-ring-hole" style="width:35px;height:35px;font-size:10px">+5,4%</div></div>
+                <div class="dm-rows" style="width:100%;text-align:left">
+                  <div class="dm-row-flat"><span>Actions Suisse</span><b style="color:var(--sage)">+6,2%</b></div>
+                  <div class="dm-row-flat"><span>ETF Monde</span><b style="color:var(--sage)">+4,8%</b></div>
+                  <div class="dm-row-flat"><span>Obligations</span><b style="color:var(--sage)">+1,9%</b></div>
+                </div>
+              </div>
             </div>
-            <div class="dash-stat dash-stat-sand" id="dashModImpot">
-              <div class="dash-stat-lbl">Impôt IR estimé</div>
-              <div class="dash-stat-val">€ <span id="dashImpotVal">0</span></div>
-              <div class="dash-stat-trend">−€ 820 optimisé</div>
+            <div class="dash-stat dash-stat-sand dash-module" id="dashModImpot">
+              <div class="dash-module-compact">
+                <div class="dash-stat-lbl">Impôt IR estimé</div>
+                <div class="dash-stat-val">€ <span id="dashImpotVal">0</span></div>
+                <div class="dash-stat-trend">−€ 820 optimisé</div>
+              </div>
+              <div class="dash-module-detail dm-dark-text" id="dashDetailImpot">
+                <div class="dash-stat-lbl" style="color:var(--sand-dk)">Impôt IR estimé</div>
+                <div class="dash-stat-val" style="font-size:clamp(16px,2vw,20px);color:var(--charcoal)">€ 4 820</div>
+                <div class="dm-rows" style="margin-top:10px">
+                  <div class="dm-row-flat"><span>Revenus fonciers</span><b>€ 1 200</b></div>
+                  <div class="dm-row-flat"><span>Salaire (quotient familial)</span><b>€ 2 900</b></div>
+                  <div class="dm-row-flat"><span style="color:var(--sage-dk)">Optimisations appliquées</span><b style="color:var(--sage-dk)">− € 820</b></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1166,15 +1262,26 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 // ── DASHBOARD LIVE DEMO ──
-// The screen always stays on the main dashboard — a "spotlight" zoom sweeps
-// across its own modules in turn (patrimoine, épargne, rendement, impôt),
-// each one popping up like an iOS icon, re-playing its own animation as it
-// gets the spotlight. Purely decorative (not clickable).
+// The screen always stays on the main dashboard. Every few seconds, one
+// module smoothly grows to fill the whole content pane (sidebar excluded),
+// cross-fading its compact tile into a richer "decomposed" detail view,
+// then shrinks back into place before the next module takes its turn.
+// Purely decorative (not clickable).
 const dashModules = ['dashModNw', 'dashModEpargne', 'dashModRendement', 'dashModImpot'];
+const dashDetailIds = {
+  dashModNw: 'dashDetailNw',
+  dashModEpargne: 'dashDetailEpargne',
+  dashModRendement: 'dashDetailRendement',
+  dashModImpot: 'dashDetailImpot'
+};
 let dashModIndex = 0;
-let dashModTimer = null;
+let dashCycleTimer = null;
 let dashStarted = false;
 const dashReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const dashContentEl = document.querySelector('.dash-content');
+
+const GROW_MS = 750, SWAP_AT = 460, HOLD_MS = 2100, SHRINK_MS = 700, GAP_MS = 420;
+const CYCLE_MS = GROW_MS + HOLD_MS + SHRINK_MS + GAP_MS;
 
 function animateDashNumber(el, target, duration = 900) {
   if (!el) return;
@@ -1196,41 +1303,98 @@ function pop(el) {
   el.classList.add('dash-donut-pop');
 }
 
-function zoomDashModule(key) {
+function fillBars(container) {
+  if (!container) return;
+  container.querySelectorAll('.dm-bar-fill').forEach(bar => {
+    bar.classList.remove('filled');
+    void bar.offsetWidth;
+    bar.classList.add('filled');
+  });
+}
+
+function resetBars(container) {
+  if (!container) return;
+  container.querySelectorAll('.dm-bar-fill').forEach(bar => bar.classList.remove('filled'));
+}
+
+function initDashNumbers() {
+  animateDashNumber(document.getElementById('dashPatrimoineVal'), 347820);
+  animateDashNumber(document.getElementById('dashEpargneVal'), 1240, 700);
+  animateDashNumber(document.getElementById('dashImpotVal'), 4820, 700);
+}
+
+function expandDashModule(key) {
   const el = document.getElementById(key);
-  if (!el) return;
-  if (!dashReduceMotion) {
-    el.classList.remove('dash-module-zoom');
-    void el.offsetWidth;
-    el.classList.add('dash-module-zoom');
-  }
-  if (key === 'dashModNw') {
-    animateDashNumber(document.getElementById('dashPatrimoineVal'), 347820);
-    pop(document.getElementById('dashModRing'));
-  } else if (key === 'dashModEpargne') {
-    animateDashNumber(document.getElementById('dashEpargneVal'), 1240, 700);
-  } else if (key === 'dashModRendement') {
-    pop(document.getElementById('dashModGauge'));
-  } else if (key === 'dashModImpot') {
-    animateDashNumber(document.getElementById('dashImpotVal'), 4820, 700);
-  }
+  const detail = document.getElementById(dashDetailIds[key]);
+  const compact = el && el.querySelector('.dash-module-compact');
+  if (!el || !detail || !compact || !dashContentEl) return;
+
+  const tileRect = el.getBoundingClientRect();
+  const targetRect = dashContentEl.getBoundingClientRect();
+  const tx = targetRect.left - tileRect.left;
+  const ty = targetRect.top - tileRect.top;
+  const sx = targetRect.width / tileRect.width;
+  const sy = targetRect.height / tileRect.height;
+
+  el.classList.add('dash-module-active');
+  dashContentEl.classList.add('dash-focus-active');
+  requestAnimationFrame(() => {
+    el.style.transform = `translate(${tx}px, ${ty}px) scale(${sx}, ${sy})`;
+  });
+
+  setTimeout(() => {
+    compact.style.opacity = '0';
+    detail.style.opacity = '1';
+    detail.style.pointerEvents = 'auto';
+    fillBars(detail);
+    pop(document.getElementById('dashDetailRing'));
+    pop(document.getElementById('dashDetailGauge'));
+  }, SWAP_AT);
+
+  setTimeout(() => {
+    detail.style.opacity = '0';
+    detail.style.pointerEvents = 'none';
+    compact.style.opacity = '1';
+    resetBars(detail);
+    el.style.transform = '';
+  }, GROW_MS + HOLD_MS);
+
+  setTimeout(() => {
+    el.classList.remove('dash-module-active');
+    dashContentEl.classList.remove('dash-focus-active');
+  }, GROW_MS + HOLD_MS + SHRINK_MS);
+}
+
+function scheduleDashCycle() {
+  expandDashModule(dashModules[dashModIndex]);
+  dashCycleTimer = setTimeout(() => {
+    dashModIndex = (dashModIndex + 1) % dashModules.length;
+    scheduleDashCycle();
+  }, CYCLE_MS);
 }
 
 function startDashDemo() {
   if (dashStarted) return;
   dashStarted = true;
   dashModIndex = 0;
-  zoomDashModule(dashModules[0]);
-  dashModTimer = setInterval(() => {
-    dashModIndex = (dashModIndex + 1) % dashModules.length;
-    zoomDashModule(dashModules[dashModIndex]);
-  }, 2000);
+  initDashNumbers();
+  if (dashReduceMotion) return;
+  scheduleDashCycle();
 }
 
 function stopDashDemo() {
   dashStarted = false;
-  clearInterval(dashModTimer);
-  dashModTimer = null;
+  clearTimeout(dashCycleTimer);
+  dashCycleTimer = null;
+  dashModules.forEach(key => {
+    const el = document.getElementById(key);
+    const detail = document.getElementById(dashDetailIds[key]);
+    const compact = el && el.querySelector('.dash-module-compact');
+    if (el) { el.classList.remove('dash-module-active'); el.style.transform = ''; }
+    if (detail) { detail.style.opacity = '0'; detail.style.pointerEvents = 'none'; resetBars(detail); }
+    if (compact) compact.style.opacity = '1';
+  });
+  if (dashContentEl) dashContentEl.classList.remove('dash-focus-active');
 }
 
 const dashPreviewEl = document.querySelector('.dash-preview');
