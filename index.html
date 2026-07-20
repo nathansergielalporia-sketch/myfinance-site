@@ -327,12 +327,12 @@ section { padding: 80px 32px; }
 }
 .dash-stat-ring { text-align: center; }
 
-/* Auto-cycling demo views */
-.dash-view { display: none; }
-.dash-view.active { display: block; animation: dash-view-in .45s cubic-bezier(.16,1,.3,1) forwards; }
-.dash-view.dash-view-out { animation: dash-view-out .2s ease forwards; }
-@keyframes dash-view-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes dash-view-out { from { opacity: 1; } to { opacity: 0; } }
+/* Auto-cycling demo views — iOS-style zoom in/out, the outer dashboard frame never resizes */
+.dash-view { display: none; transform-origin: center center; }
+.dash-view.active { display: block; animation: dash-zoom-in .5s cubic-bezier(.32,.72,0,1) forwards; }
+.dash-view.dash-view-out { animation: dash-zoom-out .32s cubic-bezier(.4,0,1,1) forwards; }
+@keyframes dash-zoom-in { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+@keyframes dash-zoom-out { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.05); } }
 .dash-detail-title { font-size: 15px; font-weight: 600; color: #F8F7F4; margin-bottom: 18px; }
 .dash-donut-pop { animation: dash-pop .5s cubic-bezier(.16,1,.3,1); }
 @keyframes dash-pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
@@ -1262,11 +1262,19 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 // ── DASHBOARD LIVE DEMO ──
-// Auto-cycles through a few sidebar tabs to showcase the product, purely
-// decorative (not clickable) — meant to make visitors want their own dashboard.
-const dashViewsOrder = ['overview', 'patrimoine', 'epargne', 'placements'];
-let dashViewIndex = 0;
-let dashCycleTimer = null;
+// "Tableau de bord" stays the home view: the demo briefly visits one other tab
+// at a time, then always returns to it, rather than cycling all tabs equally.
+// Purely decorative (not clickable) — meant to make visitors want their own dashboard.
+const dashSequence = [
+  { view: 'overview', duration: 5200 },
+  { view: 'patrimoine', duration: 3400 },
+  { view: 'overview', duration: 5200 },
+  { view: 'epargne', duration: 3400 },
+  { view: 'overview', duration: 5200 },
+  { view: 'placements', duration: 3400 },
+];
+let dashStepIndex = 0;
+let dashStepTimer = null;
 let dashStarted = false;
 const dashReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1335,7 +1343,7 @@ function showDashView(key) {
   };
   if (current && !dashReduceMotion) {
     current.classList.add('dash-view-out');
-    setTimeout(swap, 200);
+    setTimeout(swap, 300);
   } else {
     swap();
   }
@@ -1351,21 +1359,27 @@ function resetDashToOverview() {
   playDashView('overview');
 }
 
+function scheduleDashStep() {
+  const currentDuration = dashSequence[dashStepIndex].duration;
+  dashStepTimer = setTimeout(() => {
+    dashStepIndex = (dashStepIndex + 1) % dashSequence.length;
+    showDashView(dashSequence[dashStepIndex].view);
+    scheduleDashStep();
+  }, currentDuration);
+}
+
 function startDashDemo() {
   if (dashStarted) return;
   dashStarted = true;
-  dashViewIndex = 0;
+  dashStepIndex = 0;
   resetDashToOverview();
-  dashCycleTimer = setInterval(() => {
-    dashViewIndex = (dashViewIndex + 1) % dashViewsOrder.length;
-    showDashView(dashViewsOrder[dashViewIndex]);
-  }, 4200);
+  scheduleDashStep();
 }
 
 function stopDashDemo() {
   dashStarted = false;
-  clearInterval(dashCycleTimer);
-  dashCycleTimer = null;
+  clearTimeout(dashStepTimer);
+  dashStepTimer = null;
 }
 
 const dashPreviewEl = document.querySelector('.dash-preview');
