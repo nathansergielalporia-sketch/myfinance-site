@@ -280,14 +280,14 @@ section { padding: 80px 32px; }
 .dash-nw-trend { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--sage); background: rgba(200,217,200,0.12); padding: 3px 9px; border-radius: 20px; }
 .dash-donut { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
 .dash-donut-ring {
-  width: 76px; height: 76px; border-radius: 50%; flex-shrink: 0;
+  width: 76px; height: 76px; border-radius: 50%; flex-shrink: 0; position: relative;
   display: flex; align-items: center; justify-content: center;
-  background: conic-gradient(var(--sage) 0deg 206deg, var(--blue) 206deg 293deg, var(--lavender) 293deg 360deg);
 }
 .dash-donut-hole {
   width: 50px; height: 50px; border-radius: 50%; background: #232322;
   display: flex; align-items: center; justify-content: center;
   font-size: 10px; font-weight: 600; color: #F8F7F4; text-align: center;
+  position: relative; z-index: 1;
 }
 .dash-chips { display: flex; flex-direction: column; gap: 6px; }
 .dash-chip { font-size: 10.5px; color: rgba(248,247,244,0.55); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
@@ -314,16 +314,35 @@ section { padding: 80px 32px; }
 .dash-stat-sage .dash-stat-trend, .dash-stat-sand .dash-stat-trend { background: rgba(44,44,42,0.12); color: var(--charcoal); }
 .dash-sparkline { position: absolute; bottom: 0; left: 0; width: 100%; height: 30px; opacity: .8; }
 .dash-ring-gauge {
-  width: 64px; height: 64px; border-radius: 50%; margin: 2px auto 0;
+  width: 64px; height: 64px; border-radius: 50%; margin: 2px auto 0; position: relative;
   display: flex; align-items: center; justify-content: center;
-  background: conic-gradient(var(--sage) 0deg 234deg, rgba(255,255,255,0.08) 234deg 360deg);
 }
 .dash-ring-hole {
   width: 46px; height: 46px; border-radius: 50%; background: #232322;
   display: flex; align-items: center; justify-content: center;
   font-size: 12px; font-weight: 700; color: var(--sage);
+  position: relative; z-index: 1;
 }
 .dash-stat-ring { text-align: center; }
+
+/* Rings drawn via SVG stroke-dasharray (see entrance animation script) */
+.dash-ring-svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.dash-ring-track { fill: none; stroke: rgba(255,255,255,0.08); }
+.dash-ring-seg { fill: none; transform-box: fill-box; transform-origin: center; }
+#dashDonutRing .dash-ring-seg { stroke-width: 13; }
+#dashGaugeRing .dash-ring-track, #dashGaugeRing .dash-ring-seg { stroke-width: 9; }
+
+/* Entrance animation: cards fade + rise into place, one time, on scroll into view */
+.dash-nw-info, .dash-donut, .dash-stat {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .4s ease-out, transform .4s ease-out;
+}
+.dash-nw-info.dash-anim-in, .dash-donut.dash-anim-in, .dash-stat.dash-anim-in {
+  opacity: 1; transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash-nw-info, .dash-donut, .dash-stat { opacity: 1; transform: none; transition: none; }
+}
 
 /* ── TARGETS ── */
 .targets { background: var(--ecru); }
@@ -663,13 +682,20 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
           <div style="font-size:13px;color:rgba(248,247,244,0.45);margin-bottom:14px">Bonjour Nathan 👋 · 15 juin 2026</div>
 
           <div class="dash-nw">
-            <div>
+            <div class="dash-nw-info">
               <div class="dash-nw-label">Patrimoine net</div>
-              <div class="dash-nw-val">CHF <strong>347 820</strong></div>
-              <div class="dash-nw-trend"><i class="ti ti-arrow-up-right" style="font-size:12px"></i>+CHF 12 400 cette année</div>
+              <div class="dash-nw-val">CHF <strong id="dashPatrimoineVal">347 820</strong></div>
+              <div class="dash-nw-trend"><i class="ti ti-arrow-up-right" style="font-size:12px"></i>+CHF <span id="dashDeltaVal">12 400</span> cette année</div>
             </div>
             <div class="dash-donut">
-              <div class="dash-donut-ring"><div class="dash-donut-hole">367k</div></div>
+              <div class="dash-donut-ring" id="dashDonutRing">
+                <svg class="dash-ring-svg" viewBox="0 0 76 76">
+                  <circle class="dash-ring-seg" cx="38" cy="38" r="31.5" stroke="var(--sage)"></circle>
+                  <circle class="dash-ring-seg" cx="38" cy="38" r="31.5" stroke="var(--blue)"></circle>
+                  <circle class="dash-ring-seg" cx="38" cy="38" r="31.5" stroke="var(--lavender)"></circle>
+                </svg>
+                <div class="dash-donut-hole">367k</div>
+              </div>
               <div class="dash-chips">
                 <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--sage)"></div>Immobilier · CHF 210k</div>
                 <div class="dash-chip"><div class="dash-chip-dot" style="background:var(--blue)"></div>Épargne · CHF 89k</div>
@@ -681,21 +707,27 @@ footer { background: var(--charcoal); padding: 52px 32px 32px; }
           <div class="dash-stat-row">
             <div class="dash-stat dash-stat-sage">
               <div class="dash-stat-lbl">Épargne mensuelle</div>
-              <div class="dash-stat-val">CHF 1 240</div>
-              <div class="dash-stat-trend">↑ +8% ce mois</div>
+              <div class="dash-stat-val">CHF <span id="dashEpargneVal">1 240</span></div>
+              <div class="dash-stat-trend">↑ +<span id="dashEpargneTrendVal">8</span>% ce mois</div>
               <svg class="dash-sparkline" viewBox="0 0 120 32" preserveAspectRatio="none">
-                <path d="M0,26 L0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2 L120,32 L0,32 Z" fill="rgba(44,44,42,0.15)"/>
-                <path d="M0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2" fill="none" stroke="rgba(44,44,42,0.4)" stroke-width="2" stroke-linecap="round"/>
+                <path id="dashEpargneArea" d="M0,26 L0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2 L120,32 L0,32 Z" fill="rgba(44,44,42,0.15)"/>
+                <path id="dashEpargneLine" d="M0,24 C10,25 20,22 30,20 C40,18 50,20 60,15 C70,10 80,13 90,8 C100,4 110,6 120,2" fill="none" stroke="rgba(44,44,42,0.4)" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </div>
             <div class="dash-stat dash-stat-ring">
               <div class="dash-stat-lbl">Rendement 2026</div>
-              <div class="dash-ring-gauge"><div class="dash-ring-hole">+5,4%</div></div>
+              <div class="dash-ring-gauge" id="dashGaugeRing">
+                <svg class="dash-ring-svg" viewBox="0 0 64 64">
+                  <circle class="dash-ring-track" cx="32" cy="32" r="27.5"></circle>
+                  <circle class="dash-ring-seg" cx="32" cy="32" r="27.5" stroke="var(--sage)"></circle>
+                </svg>
+                <div class="dash-ring-hole">+<span id="dashRendementVal">5,4</span>%</div>
+              </div>
               <div class="dash-stat-trend">↑ YTD portefeuille</div>
             </div>
             <div class="dash-stat dash-stat-sand">
               <div class="dash-stat-lbl">Impôt IR estimé</div>
-              <div class="dash-stat-val">€ 4 820</div>
+              <div class="dash-stat-val">€ <span id="dashImpotVal">4 820</span></div>
               <div class="dash-stat-trend">−€ 820 optimisé</div>
             </div>
           </div>
@@ -1151,6 +1183,164 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ── DASHBOARD ENTRANCE ANIMATION ──
+// One-time, triggered when the mockup scrolls into view: modules fill in
+// cascade, like the dashboard is loading its data live. Purely decorative
+// (the mockup itself is static content, not the real product).
+(function () {
+  const dashSection = document.getElementById('dashboard');
+  if (!dashSection) return;
+  const dashReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function animateNumber(el, target, duration, formatter) {
+    if (!el) return;
+    const t0 = performance.now();
+    function step(now) {
+      const p = Math.min((now - t0) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = formatter(eased * target);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  const intFmt = v => Math.floor(v).toLocaleString('fr-CH');
+  const oneDecFmt = v => v.toFixed(1).replace('.', ',');
+
+  // Prep an SVG ring's segments: dash-array set to their exact arc length,
+  // rotated so each starts where the previous one ends (12 o'clock, clockwise).
+  // Under reduced motion the segments are set fully drawn immediately.
+  function prepRing(containerId, fractions) {
+    const segs = Array.from(document.querySelectorAll(`#${containerId} .dash-ring-seg`));
+    let cum = 0;
+    return segs.map((seg, i) => {
+      const len = seg.getTotalLength();
+      const arcLen = fractions[i] * len;
+      seg.style.transform = `rotate(${cum * 360}deg)`;
+      seg.style.strokeDasharray = `${arcLen} ${len - arcLen}`;
+      seg.style.strokeDashoffset = dashReduceMotion ? 0 : arcLen;
+      cum += fractions[i];
+      return { el: seg, arcLen };
+    });
+  }
+
+  function drawSegment(seg, duration) {
+    return new Promise(resolve => {
+      const t0 = performance.now();
+      function step(now) {
+        const p = Math.min((now - t0) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        seg.el.style.strokeDashoffset = seg.arcLen * (1 - eased);
+        if (p < 1) requestAnimationFrame(step);
+        else resolve();
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  async function drawRingSequential(segs, totalDuration) {
+    const per = totalDuration / segs.length;
+    for (const seg of segs) await drawSegment(seg, per);
+  }
+
+  function drawLine(pathEl, duration) {
+    if (!pathEl) return;
+    const len = pathEl.getTotalLength();
+    pathEl.style.strokeDasharray = len;
+    pathEl.style.strokeDashoffset = len;
+    const t0 = performance.now();
+    function step(now) {
+      const p = Math.min((now - t0) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      pathEl.style.strokeDashoffset = len * (1 - eased);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Prepare ring geometry immediately — fully drawn under reduced motion,
+  // hidden (ready to animate) otherwise — so nothing ever flashes as a
+  // solid overlapping circle before the section is scrolled into view.
+  const donutSegs = prepRing('dashDonutRing', [0.5722, 0.2417, 0.1861]);
+  const gaugeSegs = prepRing('dashGaugeRing', [0.65]);
+  const epargneLine = document.getElementById('dashEpargneLine');
+  const epargneArea = document.getElementById('dashEpargneArea');
+  if (epargneLine) {
+    const len = epargneLine.getTotalLength();
+    epargneLine.style.strokeDasharray = len;
+    epargneLine.style.strokeDashoffset = dashReduceMotion ? 0 : len;
+  }
+  if (epargneArea) epargneArea.style.opacity = dashReduceMotion ? '1' : '0';
+
+  if (dashReduceMotion) return; // rings above are final; numbers/cards keep their authored values
+
+  const patrimoineVal = document.getElementById('dashPatrimoineVal');
+  const deltaVal = document.getElementById('dashDeltaVal');
+  const epargneVal = document.getElementById('dashEpargneVal');
+  const epargneTrendVal = document.getElementById('dashEpargneTrendVal');
+  const rendementVal = document.getElementById('dashRendementVal');
+  const impotVal = document.getElementById('dashImpotVal');
+  [patrimoineVal, deltaVal, epargneVal, epargneTrendVal, impotVal].forEach(el => { if (el) el.textContent = '0'; });
+  if (rendementVal) rendementVal.textContent = '0,0';
+
+  function reveal(selector) {
+    const el = document.querySelector(selector);
+    if (el) el.classList.add('dash-anim-in');
+  }
+
+  const STAGGER = 120;
+  function playEntrance() {
+    // 1. Patrimoine net
+    setTimeout(() => {
+      reveal('.dash-nw-info');
+      animateNumber(patrimoineVal, 347820, 1200, intFmt);
+      animateNumber(deltaVal, 12400, 1200, intFmt);
+    }, STAGGER * 0);
+
+    // 2. Donut de répartition
+    setTimeout(() => {
+      reveal('.dash-donut');
+      drawRingSequential(donutSegs, 1200);
+    }, STAGGER * 1);
+
+    // 3. Épargne mensuelle
+    setTimeout(() => {
+      reveal('.dash-stat-sage');
+      animateNumber(epargneVal, 1240, 1200, intFmt);
+      animateNumber(epargneTrendVal, 8, 1200, intFmt);
+      drawLine(epargneLine, 900);
+      setTimeout(() => {
+        if (epargneArea) {
+          epargneArea.style.transition = 'opacity .4s ease';
+          epargneArea.style.opacity = '1';
+        }
+      }, 900);
+    }, STAGGER * 2);
+
+    // 4. Rendement 2026
+    setTimeout(() => {
+      reveal('.dash-stat-ring');
+      drawRingSequential(gaugeSegs, 1200);
+      animateNumber(rendementVal, 5.4, 1200, oneDecFmt);
+    }, STAGGER * 3);
+
+    // 5. Impôt IR estimé
+    setTimeout(() => {
+      reveal('.dash-stat-sand');
+      animateNumber(impotVal, 4820, 1200, intFmt);
+    }, STAGGER * 4);
+  }
+
+  const dashEntranceObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        playEntrance();
+        dashEntranceObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  dashEntranceObserver.observe(dashSection);
+})();
 
 // Hero init
 window.addEventListener('load', () => {
